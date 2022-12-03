@@ -53,7 +53,7 @@ function routes(app: Express) {
 
   app.get(
     "/api/songs/:songId",
-    [requireUser, validateResource(getSongSchema)],
+    validateResource(getSongSchema),
     getSongHandler
   );
 
