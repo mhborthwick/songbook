@@ -10,6 +10,7 @@ export interface SongInput {
 }
 
 export interface SongDocument extends SongInput, mongoose.Document {
+  songId: string;
   createdAt: Date;
   updatedAt: Date;
 }
