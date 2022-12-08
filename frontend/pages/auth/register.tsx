@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string, TypeOf } from "zod";
@@ -20,6 +21,7 @@ type CreateUserInput = TypeOf<typeof createUserSchema>;
 
 function Register() {
   const [registerError, setRegisterError] = useState(null);
+  const router = useRouter();
 
   const {
     register,
@@ -35,6 +37,7 @@ function Register() {
         `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/users`,
         values
       );
+      router.push("/");
     } catch (err: any) {
       setRegisterError(err.message);
     }
