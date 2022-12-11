@@ -1,11 +1,11 @@
-start_db:
-	cd backend; \
+start-db:
+	@cd backend; \
 	docker compose up
 
-start_backend:
-	cd backend; \
+start-backend:
+	@cd backend; \
 	yarn dev
 
-start_frontend:
-	cd frontend; \
+start-frontend:
+	@cd frontend; \
 	yarn dev
