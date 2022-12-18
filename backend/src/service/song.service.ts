@@ -12,6 +12,10 @@ export async function findSong(
   return Song.findOne(query, {}, options);
 }
 
+export async function findAllSongs() {
+  return Song.find({}, {}, { limit: 50, lean: true });
+}
+
 export async function findAndUpdateSong(
   query: FilterQuery<SongDocument>,
   update: UpdateQuery<SongDocument>,

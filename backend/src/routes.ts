@@ -7,6 +7,7 @@ import {
 import {
   createSongHandler,
   deleteSongHandler,
+  getAllSongsHandler,
   getSongHandler,
   updateSongHandler,
 } from "./controller/song.controller";
@@ -49,6 +50,8 @@ function routes(app: Express) {
     [requireUser, validateResource(createSongSchema)],
     createSongHandler
   );
+
+  app.get("/api/songs", getAllSongsHandler);
 
   app.put(
     "/api/songs/:songId",

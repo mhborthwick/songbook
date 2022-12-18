@@ -10,6 +10,7 @@ import {
   findAndUpdateSong,
   findSong,
   deleteSong,
+  findAllSongs,
 } from "../service/song.service";
 
 export async function createSongHandler(
@@ -22,6 +23,14 @@ export async function createSongHandler(
   // TODO: Wrap in try / catch
   const song = await createSong({ ...body, user: userId });
   return res.send(song);
+}
+
+export async function getAllSongsHandler(req: Request, res: Response) {
+  const songs = await findAllSongs();
+  if (!songs) {
+    return res.sendStatus(404);
+  }
+  return res.send(songs);
 }
 
 export async function getSongHandler(
