@@ -1,4 +1,5 @@
 import { GetServerSideProps, NextPage } from "next";
+import Header from "../components/Header";
 import useSwr from "swr";
 import styles from "../styles/Home.module.css";
 import fetcher from "../utils/fetcher";
@@ -49,7 +50,7 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
   const welcomeMsg = userData ? (
     <div>Welcome {userData.name}</div>
   ) : (
-    <div>Login to add songs</div>
+    <div>Login to share songs</div>
   );
   const songsList = songData ? (
     <ul>
@@ -59,10 +60,10 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
     </ul>
   ) : null;
   return (
-    <>
-      {welcomeMsg}
+    <div className={styles.container}>
+      <Header welcomeMsg={welcomeMsg} />
       {songsList}
-    </>
+    </div>
   );
 };
 

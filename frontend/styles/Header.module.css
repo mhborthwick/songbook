@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ul {
+  display: flex;
+  flex-direction: row;
+  margin-left: 0px;
+}
+
+.li {
+  padding-left: 1em;
+  list-style-type: none;
+}
+
+.title {
+  margin: auto 0;
+}
