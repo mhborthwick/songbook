@@ -1,12 +1,23 @@
-import { object, string, TypeOf } from "zod";
-
-// TODO: Refine url
+import { object, string, TypeOf, ZodIssueCode } from "zod";
 
 const payload = {
   body: object({
     url: string({
       required_error: "Url is required",
     }),
+  }).superRefine((data, ctx) => {
+    const regex = new RegExp(
+      /^https:\/\/open.spotify.com\/track\/[0-9a-zA-Z]{22}([?].*)?$/
+    );
+    const isValid = regex.test(data.url);
+    if (!isValid) {
+      ctx.addIssue({
+        code: ZodIssueCode.custom,
+        // TODO: add better error msg
+        message: `Invalid string`,
+        path: ["url"],
+      });
+    }
   }),
 };
 

@@ -16,6 +16,11 @@ const songPayload = {
   url: "https://open.spotify.com/track/33yAEqzKXexYM3WlOYtTfQ",
 };
 
+const invalidSongPayload = {
+  user,
+  url: "invalid data",
+};
+
 const userPayload = {
   _id: user,
   email: "jane.doe@example.com",
@@ -61,8 +66,8 @@ describe("song", () => {
       });
     });
 
-    describe("given user is logged in", () => {
-      it("should return 200 and create product", async () => {
+    describe("given user is logged in and sends valid data", () => {
+      it("should return 200 and create song", async () => {
         const jwt = signJwt(userPayload);
         const { body, statusCode } = await supertest(app)
           .post("/api/songs")
@@ -78,6 +83,17 @@ describe("song", () => {
           url: "https://open.spotify.com/track/33yAEqzKXexYM3WlOYtTfQ",
           user: expect.any(String),
         });
+      });
+    });
+
+    describe("given user is logged in and sends invalid data", () => {
+      it("should return 400", async () => {
+        const jwt = signJwt(userPayload);
+        const { statusCode } = await supertest(app)
+          .post("/api/songs")
+          .set("Authorization", `Bearer ${jwt}`)
+          .send(invalidSongPayload);
+        expect(statusCode).toBe(400);
       });
     });
   });

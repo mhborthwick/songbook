@@ -32,7 +32,6 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
   fallbackData,
 }) => {
   const { user, songs } = fallbackData;
-  console.log(songs);
   const { data: userData, error: userError } = useSwr<User | null>(
     `
     ${endpoint}/api/me
