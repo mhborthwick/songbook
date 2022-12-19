@@ -6,6 +6,7 @@ const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10);
 
 export interface SongInput {
   user: UserDocument["_id"];
+  name: UserDocument["name"];
   url: string;
 }
 
@@ -24,6 +25,7 @@ const songSchema = new mongoose.Schema(
       default: () => `song_${nanoid()}`,
     },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    name: { type: String, ref: "User" },
     url: { type: String, required: true },
   },
   {

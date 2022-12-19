@@ -13,6 +13,7 @@ const user = new mongoose.Types.ObjectId().toString();
 
 const songPayload = {
   user,
+  name: "Jane Doe",
   url: "https://open.spotify.com/track/33yAEqzKXexYM3WlOYtTfQ",
 };
 
@@ -78,6 +79,7 @@ describe("song", () => {
           __v: 0,
           _id: expect.any(String),
           createdAt: expect.any(String),
+          name: expect.any(String),
           songId: expect.any(String),
           updatedAt: expect.any(String),
           url: "https://open.spotify.com/track/33yAEqzKXexYM3WlOYtTfQ",

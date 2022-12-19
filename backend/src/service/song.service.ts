@@ -13,7 +13,7 @@ export async function findSong(
 }
 
 export async function findAllSongs() {
-  return Song.find({}, {}, { limit: 50, lean: true });
+  return Song.find({}, {}, { limit: 50, lean: true, sort: { createdAt: -1 } });
 }
 
 export async function findAndUpdateSong(

@@ -26,6 +26,7 @@ interface Song {
   songId: string;
   url: string;
   user: string;
+  name: string;
 }
 
 const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
@@ -58,7 +59,7 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
       <ul className={embedStyles.ul}>
         {songData.map((s, i) => (
           <li key={i} className={embedStyles.li}>
-            <Embed spotifyUrl={s.url} />
+            <Embed spotifyUrl={s.url} name={s.name} createdAt={s.createdAt} />
           </li>
         ))}
       </ul>

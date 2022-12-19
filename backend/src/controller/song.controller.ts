@@ -18,10 +18,11 @@ export async function createSongHandler(
   res: Response
 ) {
   const userId = res.locals.user._id;
+  const name = res.locals.user.name;
   const body = req.body;
 
   // TODO: Wrap in try / catch
-  const song = await createSong({ ...body, user: userId });
+  const song = await createSong({ ...body, name, user: userId });
   return res.send(song);
 }
 
