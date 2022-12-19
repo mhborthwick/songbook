@@ -1,7 +1,9 @@
 import { GetServerSideProps, NextPage } from "next";
 import Header from "../components/Header";
+import Embed from "../components/Embed";
 import useSwr from "swr";
 import styles from "../styles/Home.module.css";
+import embedStyles from "../styles/Embed.module.css";
 import fetcher from "../utils/fetcher";
 
 interface User {
@@ -52,11 +54,15 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
     <div>Login to share songs</div>
   );
   const songsList = songData ? (
-    <ul>
-      {songData.map((s, i) => (
-        <li key={i}>{s.url}</li>
-      ))}
-    </ul>
+    <main>
+      <ul className={embedStyles.ul}>
+        {songData.map((s, i) => (
+          <li key={i} className={embedStyles.li}>
+            <Embed spotifyUrl={s.url} />
+          </li>
+        ))}
+      </ul>
+    </main>
   ) : null;
   return (
     <div className={styles.container}>
