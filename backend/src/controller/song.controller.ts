@@ -11,6 +11,7 @@ import {
   findSong,
   deleteSong,
   findAllSongs,
+  findUserSongs,
 } from "../service/song.service";
 
 export async function createSongHandler(
@@ -32,6 +33,16 @@ export async function getAllSongsHandler(req: Request, res: Response) {
     return res.sendStatus(404);
   }
   return res.send(songs);
+}
+
+export async function getUserSongsHandler(req: Request, res: Response) {
+  const user = res.locals.user._id;
+  console.log("hi", user);
+  const userSongs = await findUserSongs({ user });
+  if (!userSongs) {
+    return res.sendStatus(404);
+  }
+  res.send(userSongs);
 }
 
 export async function getSongHandler(

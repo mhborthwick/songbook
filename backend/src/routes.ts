@@ -9,6 +9,7 @@ import {
   deleteSongHandler,
   getAllSongsHandler,
   getSongHandler,
+  getUserSongsHandler,
   updateSongHandler,
 } from "./controller/song.controller";
 import {
@@ -52,6 +53,8 @@ function routes(app: Express) {
   );
 
   app.get("/api/songs", getAllSongsHandler);
+
+  app.get("/api/my-songs", requireUser, getUserSongsHandler);
 
   app.put(
     "/api/songs/:songId",

@@ -5,6 +5,13 @@ export async function createSong(input: SongInput) {
   return Song.create(input);
 }
 
+export async function findUserSongs(
+  query: FilterQuery<SongDocument>,
+  options: QueryOptions = { lean: true }
+) {
+  return Song.find(query, {}, options);
+}
+
 export async function findSong(
   query: FilterQuery<SongDocument>,
   options: QueryOptions = { lean: true }

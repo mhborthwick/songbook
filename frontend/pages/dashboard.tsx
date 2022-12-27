@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import useSwr from "swr";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string, TypeOf, ZodIssueCode } from "zod";
+import { GetServerSideProps, NextPage } from "next";
+import fetcher from "../utils/fetcher";
 
 /**
  * Dashboard
@@ -12,10 +15,35 @@ import { object, string, TypeOf, ZodIssueCode } from "zod";
  * Add a song DONE
  * Delete a song TODO
  * Update a song TODO
- * View my songs TODO
+ * View my songs PROGRESS
  *
  * Also redirect to home if no userData
  */
+
+interface User {
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  email: string;
+  name: string;
+  session: string;
+  iat: number;
+  exp: number;
+}
+
+interface Song {
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  songId: string;
+  url: string;
+  user: string;
+  name: string;
+}
+
+const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 
 const songUrlSchema = object({
   url: string(),
@@ -36,7 +64,26 @@ const songUrlSchema = object({
 
 type AddSongUrlInput = TypeOf<typeof songUrlSchema>;
 
-function Dashboard() {
+const Dashboard: NextPage<{
+  fallbackData: { user: User; mySongs: Song[] };
+}> = ({ fallbackData }) => {
+  console.log(fallbackData);
+  const { user, mySongs } = fallbackData;
+  const { data: userData, error: userError } = useSwr<User | null>(
+    `
+    ${endpoint}/api/me
+    `,
+    fetcher,
+    { fallbackData: user }
+  );
+  const { data: mySongsData, error: songError } = useSwr<Song[] | null>(
+    `
+    ${endpoint}/api/songs
+    `,
+    fetcher,
+    { fallbackData: mySongs }
+  );
+
   const [songUrlError, addSongUrlError] = useState(null);
   const router = useRouter();
 
@@ -79,6 +126,22 @@ function Dashboard() {
       </form>
     </>
   );
-}
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const user = await fetcher(`${endpoint}/api/me`, context.req.headers);
+  const mySongs = await fetcher(
+    `${endpoint}/api/my-songs`,
+    context.req.headers
+  );
+  return {
+    props: {
+      fallbackData: {
+        user,
+        mySongs,
+      },
+    },
+  };
+};
 
 export default Dashboard;

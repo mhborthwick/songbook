@@ -39,6 +39,41 @@ describe("song", () => {
     await mongoose.connection.close();
   });
 
+  describe("get my songs route", () => {
+    describe("given user is not logged in", () => {
+      it("should return 403", async () => {
+        const { statusCode } = await supertest(app).get("/api/my-songs");
+        expect(statusCode).toBe(403);
+      });
+    });
+
+    describe("given user is logged in and has added a song", () => {
+      it("should return 200 and array containing their song", async () => {
+        await createSong(songPayload);
+        const jwt = signJwt(userPayload);
+        const { body, statusCode } = await supertest(app)
+          .get("/api/my-songs")
+          .set("Authorization", `Bearer ${jwt}`);
+        expect(statusCode).toBe(200);
+        expect(body).toHaveLength(1);
+        expect(body).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              __v: 0,
+              _id: expect.any(String),
+              createdAt: expect.any(String),
+              name: "Jane Doe",
+              songId: expect.any(String),
+              updatedAt: expect.any(String),
+              url: "https://open.spotify.com/track/33yAEqzKXexYM3WlOYtTfQ",
+              user,
+            }),
+          ])
+        );
+      });
+    });
+  });
+
   describe("get song route", () => {
     describe("given song does not exist", () => {
       it("should return 404", async () => {
