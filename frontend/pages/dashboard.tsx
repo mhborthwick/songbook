@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import useSwr from "swr";
@@ -7,15 +7,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string, TypeOf, ZodIssueCode } from "zod";
 import { GetServerSideProps, NextPage } from "next";
 import fetcher from "../utils/fetcher";
+import Embed from "../components/Embed";
+import embedStyles from "../styles/Embed.module.css";
+import dashboardStyles from "../styles/Dashboard.module.css";
+import RemoveBtn from "../components/RemoveBtn";
 
 /**
  * Dashboard
  * This is where you manage your songs
  *
  * Add a song DONE
- * Delete a song TODO
+ * Delete a song DONE
  * Update a song TODO
- * View my songs PROGRESS
+ * View my songs DONE
  *
  * Also redirect to home if no userData
  */
@@ -76,7 +80,11 @@ const Dashboard: NextPage<{
     fetcher,
     { fallbackData: user }
   );
-  const { data: mySongsData, error: songError } = useSwr<Song[] | null>(
+  const {
+    data: mySongsData,
+    error: songError,
+    mutate,
+  } = useSwr<Song[] | null>(
     `
     ${endpoint}/api/songs
     `,
@@ -85,6 +93,7 @@ const Dashboard: NextPage<{
   );
 
   const [songUrlError, addSongUrlError] = useState(null);
+
   const router = useRouter();
 
   const {
@@ -108,8 +117,36 @@ const Dashboard: NextPage<{
     }
   }
 
+  async function handleRemoveBtnClick(songId: string) {
+    try {
+      await axios.delete(`${endpoint}/api/songs/${songId}`, {
+        withCredentials: true,
+      });
+      await mutate(); //refresh SWR https://benborgers.com/posts/swr-refresh
+    } catch (err: any) {
+      // TODO: add better error handler
+      console.log(err);
+    }
+  }
+
+  const songsList = mySongsData ? (
+    <main>
+      <ul className={embedStyles.ul}>
+        {mySongsData.map((s, i) => (
+          <li key={i} className={embedStyles.li}>
+            <Embed spotifyUrl={s.url} name={s.name} createdAt={s.createdAt} />
+            <RemoveBtn
+              songId={s.songId}
+              handleRemoveBtnClick={handleRemoveBtnClick}
+            />
+          </li>
+        ))}
+      </ul>
+    </main>
+  ) : null;
+
   return (
-    <>
+    <div className={dashboardStyles.container}>
       <p>{songUrlError}</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-element">
@@ -124,7 +161,8 @@ const Dashboard: NextPage<{
         </div>
         <button type="submit">Submit</button>
       </form>
-    </>
+      <div>{songsList}</div>
+    </div>
   );
 };
 

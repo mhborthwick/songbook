@@ -19,6 +19,7 @@ const Embed = ({ spotifyUrl, name, createdAt }: Props) => {
         src={songSrc}
         width="100%"
         height="352"
+        // TODO: fix https://stackoverflow.com/questions/26274082/the-frameborder-attribute-on-the-iframe-element-is-obsolete-use-css-instead
         frameBorder="0"
         allowFullScreen={false}
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
