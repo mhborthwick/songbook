@@ -50,13 +50,12 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
     fetcher,
     { fallbackData: songs }
   );
-  const welcomeMsg = userData ? (
-    <div>Welcome, {userData.name}</div>
-  ) : (
+  const welcomeMsg = userData ? <div>Welcome, {userData.name}</div> : null;
+  const loginBtn = !userData ? (
     <Link href="/auth/login" className={styles.login}>
       Log In
     </Link>
-  );
+  ) : null;
   const songsList = songData ? (
     <main>
       <ul className={embedStyles.ul}>
@@ -70,7 +69,7 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
   ) : null;
   return (
     <div className={styles.container}>
-      <Header welcomeMsg={welcomeMsg} />
+      <Header welcomeMsg={welcomeMsg} loginBtn={loginBtn} />
       {songsList}
     </div>
   );
