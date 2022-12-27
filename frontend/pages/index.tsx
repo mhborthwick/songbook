@@ -1,4 +1,5 @@
 import { GetServerSideProps, NextPage } from "next";
+import Link from "next/link";
 import Header from "../components/Header";
 import Embed from "../components/Embed";
 import useSwr from "swr";
@@ -50,9 +51,11 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
     { fallbackData: songs }
   );
   const welcomeMsg = userData ? (
-    <div>Welcome {userData.name}</div>
+    <div>Welcome, {userData.name}</div>
   ) : (
-    <div>Login to share songs</div>
+    <Link href="/auth/login" className={styles.login}>
+      Log In
+    </Link>
   );
   const songsList = songData ? (
     <main>
