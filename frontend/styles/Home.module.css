@@ -5,6 +5,22 @@
   min-height: 100vh;
 }
 
+.login {
+  border: 1px solid black;
+  border-radius: 12px;
+  padding: 0.5rem;
+  color: rgb(40, 40, 40);
+  background-color: #fff;
+  transition-duration: 0.2s;
+}
+
+.login:hover,
+.login:focus,
+.login:active {
+  color: #fff;
+  background-color: rgb(40, 40, 40);
+}
+
 .main {
   min-height: 100vh;
   padding: 4rem 0;

@@ -17,3 +17,9 @@
 .title {
   margin: auto 0;
 }
+
+.link:hover,
+.link:focus,
+.link:active {
+  text-decoration: underline;
+}
