@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import useSwr from "swr";
@@ -11,6 +11,7 @@ import Embed from "../components/Embed";
 import embedStyles from "../styles/Embed.module.css";
 import dashboardStyles from "../styles/Dashboard.module.css";
 import RemoveBtn from "../components/RemoveBtn";
+import UpdateSongForm from "../components/UpdateSongForm";
 
 /**
  * Dashboard
@@ -18,10 +19,10 @@ import RemoveBtn from "../components/RemoveBtn";
  *
  * Add a song DONE
  * Delete a song DONE
- * Update a song TODO
+ * Update a song DONE
  * View my songs DONE
  *
- * Also redirect to home if no userData
+ * Also redirect to home if no userData TODO
  */
 
 interface User {
@@ -86,7 +87,7 @@ const Dashboard: NextPage<{
     mutate,
   } = useSwr<Song[] | null>(
     `
-    ${endpoint}/api/songs
+    ${endpoint}/api/my-songs
     `,
     fetcher,
     { fallbackData: mySongs }
@@ -134,7 +135,8 @@ const Dashboard: NextPage<{
       <ul className={embedStyles.ul}>
         {mySongsData.map((s, i) => (
           <li key={i} className={embedStyles.li}>
-            <Embed spotifyUrl={s.url} name={s.name} createdAt={s.createdAt} />
+            <Embed spotifyUrl={s.url} name={`You`} updatedAt={s.updatedAt} />
+            <UpdateSongForm songId={s.songId} refresh={mutate} />
             <RemoveBtn
               songId={s.songId}
               handleRemoveBtnClick={handleRemoveBtnClick}

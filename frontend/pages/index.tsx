@@ -61,7 +61,7 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
       <ul className={embedStyles.ul}>
         {songData.map((s, i) => (
           <li key={i} className={embedStyles.li}>
-            <Embed spotifyUrl={s.url} name={s.name} createdAt={s.createdAt} />
+            <Embed spotifyUrl={s.url} name={s.name} updatedAt={s.updatedAt} />
           </li>
         ))}
       </ul>

@@ -4,10 +4,10 @@ import styles from "../styles/Embed.module.css";
 type Props = {
   spotifyUrl: string;
   name: string;
-  createdAt: string;
+  updatedAt: string;
 };
 
-const Embed = ({ spotifyUrl, name, createdAt }: Props) => {
+const Embed = ({ spotifyUrl, name, updatedAt }: Props) => {
   const indexStart = 31;
   const indexEnd = 53;
   const songId = spotifyUrl.slice(indexStart, indexEnd);
@@ -26,7 +26,7 @@ const Embed = ({ spotifyUrl, name, createdAt }: Props) => {
         loading="lazy"
       ></iframe>
       <div className={styles.sharedBy}>
-        Shared by {name} at {new Date(createdAt).toLocaleString()}
+        Shared by {name} at {new Date(updatedAt).toLocaleString()}
       </div>
     </>
   );
