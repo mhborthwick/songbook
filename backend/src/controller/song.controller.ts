@@ -37,7 +37,6 @@ export async function getAllSongsHandler(req: Request, res: Response) {
 
 export async function getUserSongsHandler(req: Request, res: Response) {
   const user = res.locals.user._id;
-  console.log("hi", user);
   const userSongs = await findUserSongs({ user });
   if (!userSongs) {
     return res.sendStatus(404);

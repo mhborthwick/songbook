@@ -12,6 +12,8 @@ import embedStyles from "../styles/Embed.module.css";
 import dashboardStyles from "../styles/Dashboard.module.css";
 import RemoveBtn from "../components/RemoveBtn";
 import UpdateSongForm from "../components/UpdateSongForm";
+import Header from "../components/Header";
+import Link from "next/link";
 
 /**
  * Dashboard
@@ -23,6 +25,8 @@ import UpdateSongForm from "../components/UpdateSongForm";
  * View my songs DONE
  *
  * Also redirect to home if no userData TODO
+ * Sort order of my songs desc TODO
+ * Refresh Add song form after submit TODO
  */
 
 interface User {
@@ -147,8 +151,11 @@ const Dashboard: NextPage<{
     </main>
   ) : null;
 
+  const returnHomeLink = <Link href="/">Home</Link>;
+
   return (
     <div className={dashboardStyles.container}>
+      <Header returnHomeLink={returnHomeLink} />
       <p>{songUrlError}</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-element">

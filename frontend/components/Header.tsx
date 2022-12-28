@@ -5,15 +5,19 @@ import styles from "../styles/Header.module.css";
 type Props = {
   loginBtn?: React.ReactNode;
   welcomeMsg?: React.ReactNode;
+  returnHomeLink?: React.ReactNode;
 };
 
-const Header = ({ loginBtn, welcomeMsg }: Props) => {
+const Header = ({ loginBtn, welcomeMsg, returnHomeLink }: Props) => {
   const title = "SongBook";
   return (
     <div className={styles.container}>
       <div className={styles.title}>{title}</div>
       <nav>
         <ul className={styles.ul}>
+          {returnHomeLink && (
+            <li className={`${styles.li} ${styles.link}`}>{returnHomeLink}</li>
+          )}
           <li className={`${styles.li} ${styles.link}`}>
             <Link href="#">About</Link>
           </li>
