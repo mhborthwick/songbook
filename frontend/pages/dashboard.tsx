@@ -144,7 +144,7 @@ const Dashboard: NextPage<{
 
   const songsList = mySongsData ? (
     <main>
-      <ul className={embedStyles.ul}>
+      <ul className={dashboardStyles.ul}>
         {mySongsData.map((s, i) => (
           <li
             key={i}
@@ -172,6 +172,7 @@ const Dashboard: NextPage<{
   return (
     <div className={dashboardStyles.container}>
       <Header returnHomeLink={returnHomeLink} />
+      <h2>Add a song</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={dashboardStyles.fields}>
           <label className={dashboardStyles.label} htmlFor="url">
@@ -195,6 +196,7 @@ const Dashboard: NextPage<{
           <i className={dashboardStyles.error}>{songUrlError}</i>
         </div>
       </form>
+      <h2 style={{ marginBottom: 0 }}>Update or Remove songs</h2>
       <div>{songsList}</div>
     </div>
   );
