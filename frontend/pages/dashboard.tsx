@@ -24,10 +24,10 @@ import Link from "next/link";
  * Update a song DONE
  * View my songs DONE
  *
- * Also redirect to home if no userData TODO
+ * Also redirect to home if no userData TODO [At the end]
  * Sort order of my songs desc TODO
- * Refresh Add song form after submit TODO
- * Add alert when someone deletes a song TODO
+ * Refresh Add song form after submit DONE
+ * Add alert when someone deletes a song DONE
  */
 
 interface User {
@@ -132,13 +132,18 @@ const Dashboard: NextPage<{
 
   async function handleRemoveBtnClick(songId: string) {
     try {
+      const results = confirm("Are you sure you want to delete this song?");
+      if (results === false) {
+        throw Error("Delete song request aborted");
+      }
       await axios.delete(`${endpoint}/api/songs/${songId}`, {
         withCredentials: true,
       });
       await mutate(); //refresh SWR https://benborgers.com/posts/swr-refresh
     } catch (err: any) {
-      // TODO: add better error handler
-      console.log(err);
+      if (err.message !== "Delete song request aborted") {
+        alert("Something went wrong. Try again.");
+      }
     }
   }
 
