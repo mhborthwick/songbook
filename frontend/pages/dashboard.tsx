@@ -156,19 +156,32 @@ const Dashboard: NextPage<{
   return (
     <div className={dashboardStyles.container}>
       <Header returnHomeLink={returnHomeLink} />
-      <p>{songUrlError}</p>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-element">
-          <label htmlFor="url">Song URL</label>
-          <input
-            id="url"
-            type="url"
-            placeholder="https://open.spotify.com/track/11deqEO4Yczb4IQHkkvVwU?si=1e4f65df02074489"
-            {...register("url")}
-          />
-          <p>{errors.url?.message as string}</p>
+        <div className={dashboardStyles.fields}>
+          <label className={dashboardStyles.label} htmlFor="url">
+            Add a song:
+          </label>
+          <div className={dashboardStyles.wrapper}>
+            <input
+              className={dashboardStyles.input}
+              id="url"
+              type="url"
+              placeholder="e.g. https://open.spotify.com/track/11deqEO4Yczb4IQHkkvVwU?si=1e4f65df02074489"
+              {...register("url")}
+            />
+            <button className={dashboardStyles.submit} type="submit">
+              Add
+            </button>
+          </div>
+          {songUrlError && (
+            <p className={dashboardStyles.error}>{songUrlError}</p>
+          )}
+          {errors.url?.message && (
+            <p className={dashboardStyles.error}>
+              {errors.url?.message as string}
+            </p>
+          )}
         </div>
-        <button type="submit">Submit</button>
       </form>
       <div>{songsList}</div>
     </div>
