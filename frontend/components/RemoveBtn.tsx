@@ -1,4 +1,5 @@
 import * as React from "react";
+import removeBtnStyles from "../styles/Dashboard.module.css";
 
 type Props = {
   songId: string;
@@ -7,7 +8,10 @@ type Props = {
 
 const RemoveBtn = ({ songId, handleRemoveBtnClick }: Props) => {
   return (
-    <button onClick={async () => await handleRemoveBtnClick(songId)}>
+    <button
+      className={removeBtnStyles.remove}
+      onClick={async () => await handleRemoveBtnClick(songId)}
+    >
       Remove
     </button>
   );

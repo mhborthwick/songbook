@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { object, string, TypeOf, ZodIssueCode } from "zod";
 import axios from "axios";
 import { KeyedMutator } from "swr";
+import dashboardStyles from "../styles/Dashboard.module.css";
 
 interface Song {
   _id: string;
@@ -20,6 +21,7 @@ interface Song {
 type Props = {
   songId: string;
   refresh: KeyedMutator<Song[] | null>;
+  // handleRemoveBtnClick: (songId: string) => Promise<void>;
 };
 
 const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
@@ -38,8 +40,7 @@ const UpdateSongForm = ({ songId, refresh }: Props) => {
     if (!isValid) {
       ctx.addIssue({
         code: ZodIssueCode.custom,
-        // TODO: add better error msg
-        message: `Invalid URL`,
+        message: `Invalid track link. Fix your link and try again.`,
         path: ["url"],
       });
     }
@@ -79,23 +80,32 @@ const UpdateSongForm = ({ songId, refresh }: Props) => {
   }
 
   return (
-    <>
-      <p>{songError}</p>
+    <div>
       <form onSubmit={handleSubmit(updateSongOnSubmit)}>
-        <div className="form-element">
+        <div className={dashboardStyles.fields}>
           <input type="hidden" value={songId} {...register("songId")} />
-          <label htmlFor="url">Song URL</label>
-          <input
-            id="url"
-            type="url"
-            placeholder="https://open.spotify.com/track/11deqEO4Yczb4IQHkkvVwU?si=1e4f65df02074489"
-            {...register("url")}
-          />
-          <p>{errors.url?.message as string}</p>
+          <label className={dashboardStyles.label} htmlFor="url">
+            Spotify Track Link:
+          </label>
+          <div className={dashboardStyles.wrapper}>
+            <input
+              className={dashboardStyles.input}
+              id="url"
+              type="url"
+              placeholder="e.g. https://open.spotify.com/track/11deqEO4Yczb4IQHkkvVwU?si=1e4f65df02074489"
+              {...register("url")}
+            />
+            <button className={dashboardStyles.submit} type="submit">
+              Update
+            </button>
+          </div>
+          <i className={dashboardStyles.error}>
+            {errors.url?.message as string}
+          </i>
+          <i className={dashboardStyles.error}>{songError}</i>
         </div>
-        <button type="submit">Update</button>
       </form>
-    </>
+    </div>
   );
 };
 

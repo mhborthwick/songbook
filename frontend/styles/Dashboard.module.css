@@ -5,30 +5,20 @@
   min-height: 100vh;
 }
 
-.submit {
-  border: 1px solid black;
-  text-transform: uppercase;
-  padding: 1rem;
-  width: 5rem;
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
-  transition-duration: 0.2s;
-  cursor: pointer;
-  color: #fff;
-  background-color: rgb(40, 40, 40);
-}
-
 .fields {
   display: flex;
   flex-direction: column;
-  height: 100px;
   margin-top: 1rem;
 }
 
-.error {
-  margin: 0;
-  margin-top: 0.5rem;
-  color: #f15e6c;
+.label {
+  margin-bottom: 0.5rem;
+  font-size: small;
+  font-style: italic;
+}
+
+.wrapper {
+  display: flex;
 }
 
 .input {
@@ -37,12 +27,53 @@
   flex: auto;
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
+  font-size: small;
 }
 
-.label {
+.submit {
+  border: 1px solid black;
+  text-transform: uppercase;
+  padding: 1rem;
+  width: 6rem;
+  border-radius: 0 12px 12px 0;
+  cursor: pointer;
+  color: #fff;
+  background-color: rgb(40, 40, 40);
+}
+
+.error {
+  margin: 0;
+  margin-top: 0.5rem;
+  color: #f15e6c;
+}
+
+.remove {
+  border: 1px solid #f15e6c;
+  text-transform: uppercase;
+  padding: 1rem;
+  width: 6rem;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #f15e6c;
+}
+
+.sharedBy {
+  padding: 0.5em 0;
+}
+
+.sharedBy p {
+  margin: 0;
+}
+
+.removeBtnContainer {
+  display: flex;
   margin-bottom: 0.5rem;
 }
 
-.wrapper {
-  display: flex;
+.listBorder {
+  border: 2px solid rgb(220, 220, 220);
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 12px;
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import useSwr from "swr";
@@ -27,6 +27,7 @@ import Link from "next/link";
  * Also redirect to home if no userData TODO
  * Sort order of my songs desc TODO
  * Refresh Add song form after submit TODO
+ * Add alert when someone deletes a song TODO
  */
 
 interface User {
@@ -64,8 +65,7 @@ const songUrlSchema = object({
   if (!isValid) {
     ctx.addIssue({
       code: ZodIssueCode.custom,
-      // TODO: add better error msg
-      message: `Invalid URL`,
+      message: `Invalid track link. Fix your link and try again.`,
       path: ["url"],
     });
   }
@@ -103,11 +103,19 @@ const Dashboard: NextPage<{
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
     handleSubmit,
+    reset,
+    formState,
   } = useForm<AddSongUrlInput>({
     resolver: zodResolver(songUrlSchema),
   });
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({ url: "" });
+    }
+  }, [formState, reset]);
 
   async function onSubmit(values: AddSongUrlInput) {
     try {
@@ -138,13 +146,21 @@ const Dashboard: NextPage<{
     <main>
       <ul className={embedStyles.ul}>
         {mySongsData.map((s, i) => (
-          <li key={i} className={embedStyles.li}>
-            <Embed spotifyUrl={s.url} name={`You`} updatedAt={s.updatedAt} />
+          <li
+            key={i}
+            className={`${embedStyles.li} ${dashboardStyles.listBorder}`}
+          >
+            <div className={dashboardStyles.removeBtnContainer}>
+              <RemoveBtn
+                songId={s.songId}
+                handleRemoveBtnClick={handleRemoveBtnClick}
+              />
+            </div>
+            <Embed spotifyUrl={s.url} />
+            <div className={dashboardStyles.sharedBy}>
+              <p>Shared by You at {new Date(s.updatedAt).toLocaleString()}</p>
+            </div>
             <UpdateSongForm songId={s.songId} refresh={mutate} />
-            <RemoveBtn
-              songId={s.songId}
-              handleRemoveBtnClick={handleRemoveBtnClick}
-            />
           </li>
         ))}
       </ul>
@@ -159,7 +175,7 @@ const Dashboard: NextPage<{
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={dashboardStyles.fields}>
           <label className={dashboardStyles.label} htmlFor="url">
-            Add a song:
+            Spotify Track Link:
           </label>
           <div className={dashboardStyles.wrapper}>
             <input
@@ -173,14 +189,10 @@ const Dashboard: NextPage<{
               Add
             </button>
           </div>
-          {songUrlError && (
-            <p className={dashboardStyles.error}>{songUrlError}</p>
-          )}
-          {errors.url?.message && (
-            <p className={dashboardStyles.error}>
-              {errors.url?.message as string}
-            </p>
-          )}
+          <i className={dashboardStyles.error}>
+            {errors.url?.message as string}
+          </i>
+          <i className={dashboardStyles.error}>{songUrlError}</i>
         </div>
       </form>
       <div>{songsList}</div>

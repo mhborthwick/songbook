@@ -1,13 +1,10 @@
 import * as React from "react";
-import styles from "../styles/Embed.module.css";
 
 type Props = {
   spotifyUrl: string;
-  name: string;
-  updatedAt: string;
 };
 
-const Embed = ({ spotifyUrl, name, updatedAt }: Props) => {
+const Embed = ({ spotifyUrl }: Props) => {
   const indexStart = 31;
   const indexEnd = 53;
   const songId = spotifyUrl.slice(indexStart, indexEnd);
@@ -15,7 +12,6 @@ const Embed = ({ spotifyUrl, name, updatedAt }: Props) => {
   return (
     <>
       <iframe
-        style={{ borderRadius: "12px" }}
         src={songSrc}
         width="100%"
         height="352"
@@ -25,9 +21,6 @@ const Embed = ({ spotifyUrl, name, updatedAt }: Props) => {
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"
       ></iframe>
-      <div className={styles.sharedBy}>
-        Shared by {name} at {new Date(updatedAt).toLocaleString()}
-      </div>
     </>
   );
 };
