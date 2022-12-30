@@ -1,10 +1,16 @@
 import { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
+import { object, string, TypeOf, ZodIssueCode } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import useSwr from "swr";
 import Header from "../components/Header";
 import Embed from "../components/Embed";
-import useSwr from "swr";
 import styles from "../styles/Home.module.css";
 import embedStyles from "../styles/Embed.module.css";
+import dashboardStyles from "../styles/Dashboard.module.css";
 import fetcher from "../utils/fetcher";
 
 interface User {
@@ -32,6 +38,24 @@ interface Song {
 
 const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 
+const songUrlSchema = object({
+  url: string(),
+}).superRefine((data, ctx) => {
+  const regex = new RegExp(
+    /^https:\/\/open.spotify.com\/track\/[0-9a-zA-Z]{22}([?].*)?$/
+  );
+  const isValid = regex.test(data.url);
+  if (!isValid) {
+    ctx.addIssue({
+      code: ZodIssueCode.custom,
+      message: `Invalid track link. Fix your link and try again.`,
+      path: ["url"],
+    });
+  }
+});
+
+type AddSongUrlInput = TypeOf<typeof songUrlSchema>;
+
 const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
   fallbackData,
 }) => {
@@ -43,13 +67,50 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
     fetcher,
     { fallbackData: user }
   );
-  const { data: songData, error: songError } = useSwr<Song[] | null>(
+  console.log(userData);
+  const {
+    data: songData,
+    error: songError,
+    mutate,
+  } = useSwr<Song[] | null>(
     `
     ${endpoint}/api/songs
     `,
     fetcher,
     { fallbackData: songs }
   );
+
+  const [songUrlError, addSongUrlError] = useState(null);
+
+  const {
+    register,
+    formState: { errors, isSubmitSuccessful },
+    handleSubmit,
+    reset,
+    formState,
+  } = useForm<AddSongUrlInput>({
+    resolver: zodResolver(songUrlSchema),
+  });
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({ url: "" });
+    }
+  }, [formState, reset]);
+
+  async function onSubmit(values: AddSongUrlInput) {
+    try {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/songs`,
+        values,
+        { withCredentials: true }
+      );
+      await mutate(); //refresh SWR https://benborgers.com/posts/swr-refres
+    } catch (err: any) {
+      addSongUrlError(err.message);
+    }
+  }
+
   const welcomeMsg = userData ? <div>Welcome, {userData.name}</div> : null;
   const loginBtn = !userData ? (
     <Link href="/auth/login" className={styles.login}>
@@ -73,6 +134,46 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
   return (
     <div className={styles.container}>
       <Header welcomeMsg={welcomeMsg} loginBtn={loginBtn} />
+      {userData ? (
+        //TODO: clean style imports
+        <>
+          <h2>Add a song</h2>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className={dashboardStyles.fields}>
+              <label className={dashboardStyles.label} htmlFor="url">
+                Spotify Track Link:
+              </label>
+              <div className={dashboardStyles.wrapper}>
+                <input
+                  className={dashboardStyles.input}
+                  id="url"
+                  type="url"
+                  placeholder="e.g. https://open.spotify.com/track/11deqEO4Yczb4IQHkkvVwU?si=1e4f65df02074489"
+                  {...register("url")}
+                />
+                <button className={dashboardStyles.submit} type="submit">
+                  Add
+                </button>
+              </div>
+              <i className={dashboardStyles.error}>
+                {errors.url?.message as string}
+              </i>
+              <i className={dashboardStyles.error}>{songUrlError}</i>
+            </div>
+          </form>
+        </>
+      ) : (
+        <>
+          <h2>Welcome!</h2>
+          <p>
+            Check out the songs below or{" "}
+            <Link style={{ textDecoration: "underline" }} href="auth/register">
+              join
+            </Link>{" "}
+            to share a song for a future visitor.
+          </p>
+        </>
+      )}
       {songsList}
     </div>
   );
