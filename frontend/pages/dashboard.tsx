@@ -8,6 +8,7 @@ import dashboardStyles from "../styles/Dashboard.module.css";
 import RemoveBtn from "../components/RemoveBtn";
 import UpdateSongForm from "../components/UpdateSongForm";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 /**
  * Dashboard
@@ -17,12 +18,11 @@ import Header from "../components/Header";
  * Delete a song DONE
  * Update a song DONE
  * View my songs DONE
- *
- * Sort order of my songs desc TODO
  * Refresh Add song form after submit DONE
  * Add alert when someone deletes a song DONE
  * Only allow 3 songs per account DONE
- * Add a footer TODO
+ * Add a footer DONE
+ * Sort order of my songs desc TODO
  * Add ability to log out TODO
  * Add Google oAuth TODO
  * Clean up login page TODO
@@ -103,11 +103,14 @@ const Dashboard: NextPage<{
   const returnHomeLink = <Link href="/">Home</Link>;
 
   return (
-    <div className={dashboardStyles.container}>
-      <Header returnHomeLink={returnHomeLink} />
-      <h2 style={{ marginBottom: 0 }}>Update or Remove songs</h2>
-      <div>{songsList}</div>
-    </div>
+    <>
+      <div className={dashboardStyles.container}>
+        <Header returnHomeLink={returnHomeLink} />
+        <h2 style={{ marginBottom: 0 }}>Update or Remove songs</h2>
+        <div>{songsList}</div>
+      </div>
+      <Footer />
+    </>
   );
 };
 

@@ -12,6 +12,7 @@ import styles from "../styles/Home.module.css";
 import embedStyles from "../styles/Embed.module.css";
 import dashboardStyles from "../styles/Dashboard.module.css";
 import fetcher from "../utils/fetcher";
+import Footer from "../components/Footer";
 
 interface User {
   _id: string;
@@ -139,50 +140,56 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
     </main>
   ) : null;
   return (
-    <div className={styles.container}>
-      <Header welcomeMsg={welcomeMsg} loginBtn={loginBtn} />
-      {userData ? (
-        //TODO: clean style imports
-        <>
-          <h2>Add a song</h2>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className={dashboardStyles.fields}>
-              <label className={dashboardStyles.label} htmlFor="url">
-                Spotify Track Link:
-              </label>
-              <div className={dashboardStyles.wrapper}>
-                <input
-                  className={dashboardStyles.input}
-                  id="url"
-                  type="url"
-                  placeholder="e.g. https://open.spotify.com/track/11deqEO4Yczb4IQHkkvVwU?si=1e4f65df02074489"
-                  {...register("url")}
-                />
-                <button className={dashboardStyles.submit} type="submit">
-                  Add
-                </button>
+    <>
+      <div className={styles.container}>
+        <Header welcomeMsg={welcomeMsg} loginBtn={loginBtn} />
+        {userData ? (
+          //TODO: clean style imports
+          <>
+            <h2>Add a song</h2>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className={dashboardStyles.fields}>
+                <label className={dashboardStyles.label} htmlFor="url">
+                  Spotify Track Link:
+                </label>
+                <div className={dashboardStyles.wrapper}>
+                  <input
+                    className={dashboardStyles.input}
+                    id="url"
+                    type="url"
+                    placeholder="e.g. https://open.spotify.com/track/11deqEO4Yczb4IQHkkvVwU?si=1e4f65df02074489"
+                    {...register("url")}
+                  />
+                  <button className={dashboardStyles.submit} type="submit">
+                    Add
+                  </button>
+                </div>
+                <i className={dashboardStyles.error}>
+                  {errors.url?.message as string}
+                </i>
+                <i className={dashboardStyles.error}>{songUrlError}</i>
               </div>
-              <i className={dashboardStyles.error}>
-                {errors.url?.message as string}
-              </i>
-              <i className={dashboardStyles.error}>{songUrlError}</i>
-            </div>
-          </form>
-        </>
-      ) : (
-        <>
-          <h2>Welcome!</h2>
-          <p>
-            Check out the songs below or{" "}
-            <Link style={{ textDecoration: "underline" }} href="auth/register">
-              join
-            </Link>{" "}
-            to share a song for a future visitor.
-          </p>
-        </>
-      )}
-      {songsList}
-    </div>
+            </form>
+          </>
+        ) : (
+          <>
+            <h2>Welcome!</h2>
+            <p>
+              Check out the songs below or{" "}
+              <Link
+                style={{ textDecoration: "underline" }}
+                href="auth/register"
+              >
+                join
+              </Link>{" "}
+              to share a song for a future visitor.
+            </p>
+          </>
+        )}
+        {songsList}
+      </div>
+      <Footer />
+    </>
   );
 };
 
