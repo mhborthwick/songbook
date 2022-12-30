@@ -17,6 +17,7 @@ import {
   getCurrentUser,
 } from "./controller/user.controller";
 import requireUser from "./middleware/requireUser";
+import restrictNumberOfSongs from "./middleware/restrictNumberOfSongs";
 import validateResource from "./middleware/validateResource";
 import { createSessionSchema } from "./schema/session.schema";
 import {
@@ -48,7 +49,7 @@ function routes(app: Express) {
 
   app.post(
     "/api/songs",
-    [requireUser, validateResource(createSongSchema)],
+    [requireUser, validateResource(createSongSchema), restrictNumberOfSongs],
     createSongHandler
   );
 

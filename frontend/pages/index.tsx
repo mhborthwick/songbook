@@ -80,7 +80,7 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
     { fallbackData: songs }
   );
 
-  const [songUrlError, addSongUrlError] = useState(null);
+  const [songUrlError, addSongUrlError] = useState<string | null>(null);
 
   const {
     register,
@@ -107,7 +107,14 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
       );
       await mutate(); //refresh SWR https://benborgers.com/posts/swr-refres
     } catch (err: any) {
-      addSongUrlError(err.message);
+      const hasReachedLimitMsg = err.response.data.message;
+      if (hasReachedLimitMsg === "Reached max limit") {
+        addSongUrlError(
+          "You have hit your limit for adding songs. Update or remove an existing song."
+        );
+      } else {
+        addSongUrlError(err.message);
+      }
     }
   }
 

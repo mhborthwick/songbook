@@ -21,7 +21,6 @@ interface Song {
 type Props = {
   songId: string;
   refresh: KeyedMutator<Song[] | null>;
-  // handleRemoveBtnClick: (songId: string) => Promise<void>;
 };
 
 const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
