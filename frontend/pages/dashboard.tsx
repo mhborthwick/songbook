@@ -1,11 +1,7 @@
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
 import useSwr from "swr";
 import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { object, string, TypeOf, ZodIssueCode } from "zod";
 import { GetServerSideProps, NextPage } from "next";
+import Link from "next/link";
 import fetcher from "../utils/fetcher";
 import Embed from "../components/Embed";
 import embedStyles from "../styles/Embed.module.css";
@@ -13,7 +9,6 @@ import dashboardStyles from "../styles/Dashboard.module.css";
 import RemoveBtn from "../components/RemoveBtn";
 import UpdateSongForm from "../components/UpdateSongForm";
 import Header from "../components/Header";
-import Link from "next/link";
 
 /**
  * Dashboard
@@ -55,24 +50,6 @@ interface Song {
 
 const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 
-const songUrlSchema = object({
-  url: string(),
-}).superRefine((data, ctx) => {
-  const regex = new RegExp(
-    /^https:\/\/open.spotify.com\/track\/[0-9a-zA-Z]{22}([?].*)?$/
-  );
-  const isValid = regex.test(data.url);
-  if (!isValid) {
-    ctx.addIssue({
-      code: ZodIssueCode.custom,
-      message: `Invalid track link. Fix your link and try again.`,
-      path: ["url"],
-    });
-  }
-});
-
-type AddSongUrlInput = TypeOf<typeof songUrlSchema>;
-
 const Dashboard: NextPage<{
   fallbackData: { user: User; mySongs: Song[] };
 }> = ({ fallbackData }) => {
@@ -97,51 +74,18 @@ const Dashboard: NextPage<{
     { fallbackData: mySongs }
   );
 
-  const [songUrlError, addSongUrlError] = useState(null);
-
-  const router = useRouter();
-
-  const {
-    register,
-    formState: { errors, isSubmitSuccessful },
-    handleSubmit,
-    reset,
-    formState,
-  } = useForm<AddSongUrlInput>({
-    resolver: zodResolver(songUrlSchema),
-  });
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset({ url: "" });
-    }
-  }, [formState, reset]);
-
-  async function onSubmit(values: AddSongUrlInput) {
-    try {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/songs`,
-        values,
-        { withCredentials: true }
-      );
-      router.push("/");
-    } catch (err: any) {
-      addSongUrlError(err.message);
-    }
-  }
-
   async function handleRemoveBtnClick(songId: string) {
     try {
-      const results = confirm("Are you sure you want to delete this song?");
+      const results = confirm("Are you sure you want to remove this song?");
       if (results === false) {
-        throw Error("Delete song request aborted");
+        throw Error("Remove song request aborted");
       }
       await axios.delete(`${endpoint}/api/songs/${songId}`, {
         withCredentials: true,
       });
       await mutate(); //refresh SWR https://benborgers.com/posts/swr-refresh
     } catch (err: any) {
-      if (err.message !== "Delete song request aborted") {
+      if (err.message !== "Remove song request aborted") {
         alert("Something went wrong. Try again.");
       }
     }
@@ -177,30 +121,6 @@ const Dashboard: NextPage<{
   return (
     <div className={dashboardStyles.container}>
       <Header returnHomeLink={returnHomeLink} />
-      <h2>Add a song</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={dashboardStyles.fields}>
-          <label className={dashboardStyles.label} htmlFor="url">
-            Spotify Track Link:
-          </label>
-          <div className={dashboardStyles.wrapper}>
-            <input
-              className={dashboardStyles.input}
-              id="url"
-              type="url"
-              placeholder="e.g. https://open.spotify.com/track/11deqEO4Yczb4IQHkkvVwU?si=1e4f65df02074489"
-              {...register("url")}
-            />
-            <button className={dashboardStyles.submit} type="submit">
-              Add
-            </button>
-          </div>
-          <i className={dashboardStyles.error}>
-            {errors.url?.message as string}
-          </i>
-          <i className={dashboardStyles.error}>{songUrlError}</i>
-        </div>
-      </form>
       <h2 style={{ marginBottom: 0 }}>Update or Remove songs</h2>
       <div>{songsList}</div>
     </div>
