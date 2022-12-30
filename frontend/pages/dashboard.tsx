@@ -22,10 +22,12 @@ import Footer from "../components/Footer";
  * Add alert when someone deletes a song DONE
  * Only allow 3 songs per account DONE
  * Add a footer DONE
- * Sort order of my songs desc TODO
+ * Sort order of my songs desc DONE
+ * Sort order of all songs by updatedAt DONE
  * Add ability to log out TODO
  * Add Google oAuth TODO
  * Clean up login page TODO
+ * Add pagination [Probably] TODO
  * If on dashboard, redirect to home if no userData TODO [At the end]
  */
 

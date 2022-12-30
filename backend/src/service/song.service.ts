@@ -7,7 +7,7 @@ export async function createSong(input: SongInput) {
 
 export async function findUserSongs(
   query: FilterQuery<SongDocument>,
-  options: QueryOptions = { lean: true }
+  options: QueryOptions = { lean: true, sort: { createdAt: -1 } }
 ) {
   return Song.find(query, {}, options);
 }
@@ -20,7 +20,7 @@ export async function findSong(
 }
 
 export async function findAllSongs() {
-  return Song.find({}, {}, { limit: 50, lean: true, sort: { createdAt: -1 } });
+  return Song.find({}, {}, { limit: 50, lean: true, sort: { updatedAt: -1 } });
 }
 
 export async function findAndUpdateSong(
