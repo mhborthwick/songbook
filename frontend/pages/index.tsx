@@ -136,7 +136,7 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
     }
   }
 
-  const welcomeMsg = userData ? <div>Welcome, {userData.name}</div> : null;
+  // const welcomeMsg = userData ? <h1>Welcome, {userData.name}</h1> : null;
   const loginBtn = !userData ? (
     <Link href="/auth/login" className={styles.login}>
       Log In
@@ -164,11 +164,7 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
   return (
     <>
       <div className={styles.container}>
-        <Header
-          welcomeMsg={welcomeMsg}
-          loginBtn={loginBtn}
-          logoutBtn={logoutBtn}
-        />
+        <Header loginBtn={loginBtn} logoutBtn={logoutBtn} />
         {userData ? (
           //TODO: clean style imports
           <>
