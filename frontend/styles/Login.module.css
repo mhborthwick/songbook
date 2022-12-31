@@ -11,7 +11,7 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  height: 80vh;
+  min-height: 80vh;
   justify-content: center;
 }
 
@@ -27,7 +27,7 @@
 
 .label {
   margin-bottom: 0.5rem;
-  font-size: medium;
+  font-size: small;
   font-style: italic;
 }
 
@@ -35,6 +35,13 @@
   margin-top: 0.5rem;
   color: #f15e6c;
   font-size: small;
+  font-style: italic;
+}
+
+.requestError {
+  margin-top: 0.5rem;
+  color: #f15e6c;
+  font-size: medium;
   font-style: italic;
 }
 

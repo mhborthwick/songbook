@@ -24,9 +24,10 @@ import Footer from "../components/Footer";
  * Add a footer DONE
  * Sort order of my songs desc DONE
  * Sort order of all songs by updatedAt DONE
+ * Add Google oAuth MAYBE LATER
+ * Clean up login page DONE
+ * Clean up register page TODO
  * Add ability to log out TODO
- * Add Google oAuth [LATER] TODO
- * Clean up login page TODO
  * Add pagination [Probably] TODO
  * If on dashboard, redirect to home if no userData TODO [At the end]
  */

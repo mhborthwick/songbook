@@ -50,7 +50,7 @@ function Login() {
         <Header returnHomeLink={returnHomeLink} />
         <div className={loginStyles.container}>
           <h2>Welcome back</h2>
-          <p style={{ margin: "0 0 2rem" }}>
+          <p style={{ marginTop: 0 }}>
             Welcome back! Please enter your details.
           </p>
           <form onSubmit={handleSubmit(onSubmit)}>
