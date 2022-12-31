@@ -21,6 +21,24 @@
   background-color: rgb(40, 40, 40);
 }
 
+.logout {
+  border: 1px solid black;
+  border-radius: 12px;
+  padding: 0.5rem;
+  color: rgb(40, 40, 40);
+  background-color: #fff;
+  transition-duration: 0.2s;
+  cursor: pointer;
+  font-size: medium;
+}
+
+.logout:hover,
+.logout:focus,
+.logout:active {
+  color: #fff;
+  background-color: rgb(40, 40, 40);
+}
+
 .main {
   min-height: 100vh;
   padding: 4rem 0;

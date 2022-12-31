@@ -3,7 +3,7 @@ import Link from "next/link";
 import { object, string, TypeOf, ZodIssueCode } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import useSwr from "swr";
 import Header from "../components/Header";
@@ -61,7 +61,11 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
   fallbackData,
 }) => {
   const { user, songs } = fallbackData;
-  const { data: userData, error: userError } = useSwr<User | null>(
+  const {
+    data: userData,
+    error: userError,
+    mutate: userMutate,
+  } = useSwr<User | null>(
     `
     ${endpoint}/api/me
     `,
@@ -119,11 +123,29 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
     }
   }
 
+  async function onLogOut() {
+    try {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`,
+        { withCredentials: true }
+      );
+      await userMutate();
+    } catch (err: any) {
+      // TODO: improve error message
+      console.log(err);
+    }
+  }
+
   const welcomeMsg = userData ? <div>Welcome, {userData.name}</div> : null;
   const loginBtn = !userData ? (
     <Link href="/auth/login" className={styles.login}>
       Log In
     </Link>
+  ) : null;
+  const logoutBtn = userData ? (
+    <button className={styles.logout} onClick={onLogOut}>
+      Log Out
+    </button>
   ) : null;
   const songsList = songData ? (
     <main>
@@ -142,7 +164,11 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
   return (
     <>
       <div className={styles.container}>
-        <Header welcomeMsg={welcomeMsg} loginBtn={loginBtn} />
+        <Header
+          welcomeMsg={welcomeMsg}
+          loginBtn={loginBtn}
+          logoutBtn={logoutBtn}
+        />
         {userData ? (
           //TODO: clean style imports
           <>

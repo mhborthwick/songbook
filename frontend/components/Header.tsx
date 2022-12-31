@@ -4,11 +4,12 @@ import styles from "../styles/Header.module.css";
 
 type Props = {
   loginBtn?: React.ReactNode;
+  logoutBtn?: React.ReactNode;
   welcomeMsg?: React.ReactNode;
   returnHomeLink?: React.ReactNode;
 };
 
-const Header = ({ loginBtn, welcomeMsg, returnHomeLink }: Props) => {
+const Header = ({ loginBtn, logoutBtn, welcomeMsg, returnHomeLink }: Props) => {
   const title = "SongBook";
   return (
     <div className={styles.container}>
@@ -32,6 +33,7 @@ const Header = ({ loginBtn, welcomeMsg, returnHomeLink }: Props) => {
               </li>
             </>
           )}
+          {logoutBtn && <li className={styles.li}>{logoutBtn}</li>}
         </ul>
       </nav>
     </div>
