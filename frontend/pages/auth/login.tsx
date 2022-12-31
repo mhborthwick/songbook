@@ -4,6 +4,10 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string, TypeOf } from "zod";
+import loginStyles from "../../styles/Login.module.css";
+import Header from "../../components/Header";
+import Link from "next/link";
+import Footer from "../../components/Footer";
 
 const createSessionSchema = object({
   email: string().min(1, "Email is required"),
@@ -33,36 +37,72 @@ function Login() {
       );
       router.push("/");
     } catch (err: any) {
+      //TODO: Improve error message
       setLoginError(err.message);
     }
   }
 
+  const returnHomeLink = <Link href="/">Home</Link>;
+
   return (
     <>
-      <p>{loginError}</p>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-element">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            placeholder="jane.doe@example.com"
-            {...register("email")}
-          />
-          <p>{errors.email?.message as string}</p>
+      <div className={loginStyles.outerContainer}>
+        <Header returnHomeLink={returnHomeLink} />
+        <div className={loginStyles.container}>
+          <h2>Welcome back</h2>
+          <p style={{ margin: "0 0 2rem" }}>
+            Welcome back! Please enter your details.
+          </p>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className={loginStyles.fields}>
+              <div className={loginStyles.formElement}>
+                <label className={loginStyles.label} htmlFor="email">
+                  Email:
+                </label>
+                <input
+                  className={loginStyles.input}
+                  id="email"
+                  type="email"
+                  placeholder="jane.doe@example.com"
+                  {...register("email")}
+                />
+                <p className={loginStyles.error}>
+                  {errors.email?.message as string}
+                </p>
+              </div>
+              <div className={loginStyles.formElement}>
+                <label className={loginStyles.label} htmlFor="password">
+                  Password:
+                </label>
+                <input
+                  className={loginStyles.input}
+                  id="password"
+                  type="password"
+                  placeholder="******"
+                  {...register("password")}
+                />
+                <p className={loginStyles.error}>
+                  {errors.password?.message as string}
+                </p>
+              </div>
+              <button className={loginStyles.submit} type="submit">
+                Log In
+              </button>
+              <p style={{ textAlign: "center" }}>
+                Don't have an account?{" "}
+                <Link
+                  href="/auth/register"
+                  style={{ textDecoration: "underline" }}
+                >
+                  Sign up
+                </Link>
+              </p>
+              <p className={loginStyles.error}>{loginError}</p>
+            </div>
+          </form>
         </div>
-        <div className="form-element">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            placeholder="******"
-            {...register("password")}
-          />
-          <p>{errors.password?.message as string}</p>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+      </div>
+      <Footer />
     </>
   );
 }
