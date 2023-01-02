@@ -3,7 +3,7 @@ import Link from "next/link";
 import { object, string, TypeOf, ZodIssueCode } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import useSwr from "swr";
 import Header from "../components/Header";
@@ -101,7 +101,7 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
     if (isSubmitSuccessful) {
       reset({ url: "" });
     }
-  }, [formState, reset]);
+  }, [isSubmitSuccessful, formState, reset]);
 
   async function onSubmit(values: AddSongUrlInput) {
     try {

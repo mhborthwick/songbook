@@ -61,7 +61,7 @@ const UpdateSongForm = ({ songId, refresh }: Props) => {
     if (isSubmitSuccessful) {
       reset({ url: "" });
     }
-  }, [formState, reset]);
+  }, [isSubmitSuccessful, formState, reset]);
 
   async function updateSongOnSubmit(values: UpdateSongInput) {
     try {
