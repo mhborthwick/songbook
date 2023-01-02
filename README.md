@@ -2,7 +2,7 @@
 
 > Share your favorite songs for a future visitor
 
-## View Demo [Coming soong]
+## View Demo [Coming soon]
 
 ## Requirements
 
