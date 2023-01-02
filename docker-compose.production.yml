@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.production
+    ports:
+      - 3000:3000
+    networks:
+      - react-express
+    depends_on:
+      - backend
+
+  backend:
+    restart: unless-stopped
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.production
+    networks:
+      - react-express
+      - express-mongo
+    ports:
+      - 1337:1337
+    depends_on:
+      - mongodb
+    env_file: ./backend/.env
+
+  mongodb:
+    restart: always
+    image: mongo:4.2.0
+    networks:
+      - express-mongo
+    ports:
+      - 27017:27017
+
+networks:
+  react-express:
+  express-mongo:

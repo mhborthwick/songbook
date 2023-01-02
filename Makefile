@@ -1,11 +1,5 @@
-start-db:
-	@cd backend; \
-	docker compose up
+dev:
+	@docker-compose -f docker-compose.development.yml up --build --force-recreate
 
-start-backend:
-	@cd backend; \
-	yarn dev
-
-start-frontend:
-	@cd frontend; \
-	yarn dev
+prod:
+	@docker-compose -f docker-compose.production.yml up --build --force-recreate

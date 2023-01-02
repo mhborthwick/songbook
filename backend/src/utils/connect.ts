@@ -9,6 +9,7 @@ async function connect() {
     log.info("Connected to DB");
   } catch (err) {
     log.error("Failed connecting to DB");
+    log.info(err);
     process.exit(1);
   }
 }

@@ -1,6 +1,6 @@
 export default {
   port: 1337,
-  dbUri: "mongodb://localhost:27017/songbook",
+  dbUri: "mongodb://mongodb:27017/songbook",
   saltWorkFactor: 10,
   accessTokenTtl: "15m",
   refreshTokenTtl: "1y",

@@ -1,0 +1,22 @@
+FROM node:16-alpine
+
+ENV NODE_ENV=development
+
+ENV NEXT_PUBLIC_SERVER_ENDPOINT=http://localhost:1337
+
+# https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine
+RUN apk add --no-cache libc6-compat
+
+WORKDIR /usr/src/app
+
+COPY package.json yarn.lock ./
+
+COPY tsconfig.json ./tsconfig.json
+
+RUN yarn install
+
+COPY config ./config
+
+COPY src ./src
+
+CMD ["yarn", "dev"]
