@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.development
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/pages:/usr/src/app/pages
+      - ./frontend/public:/usr/src/app/public
+      - ./frontend/styles:/usr/src/app/styles
+      - ./frontend/components:/usr/src/app/components
+      - ./frontend/utils:/usr/src/app/utils
+
+  backend:
+    restart: unless-stopped
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.development
+    networks:
+      - react-express
+      - express-mongo
+    ports:
+      - 1337:1337
+    depends_on:
+      - mongodb
+    env_file: ./backend/.env
+    volumes:
+      - ./backend/config:/usr/src/app/config
+      - ./backend/node_modules:/usr/src/app/node_modules
+      - ./backend/src:/usr/src/app/src
+      - ./backend/tsconfig.json:/usr/src/app/tsconfig.json
+      - ./backend/package.json:/usr/src/app/package.json
+
+  mongodb:
+    restart: always
+    image: mongo:4.2.0
+    networks:
+      - express-mongo
+    ports:
+      - 27017:27017
+
+networks:
+  react-express:
+  express-mongo:

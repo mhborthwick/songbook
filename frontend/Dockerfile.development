@@ -1,0 +1,17 @@
+FROM node:16-alpine
+
+ENV NODE_ENV=development
+
+ENV NEXT_PUBLIC_SERVER_ENDPOINT=http://localhost:1337
+
+WORKDIR /usr/src/app
+
+COPY package.json yarn.lock ./
+
+RUN yarn install
+
+COPY next.config.js ./
+
+COPY tsconfig.json ./
+
+CMD ["yarn", "dev"]
