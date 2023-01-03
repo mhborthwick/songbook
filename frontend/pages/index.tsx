@@ -39,6 +39,8 @@ interface Song {
 
 const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 
+console.log(endpoint);
+
 const songUrlSchema = object({
   url: string(),
 }).superRefine((data, ctx) => {
@@ -105,11 +107,9 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
 
   async function onSubmit(values: AddSongUrlInput) {
     try {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/songs`,
-        values,
-        { withCredentials: true }
-      );
+      await axios.post(`${endpoint}/api/songs`, values, {
+        withCredentials: true,
+      });
       await mutate(); //refresh SWR https://benborgers.com/posts/swr-refres
     } catch (err: any) {
       const hasReachedLimitMsg = err.response.data.message;
@@ -125,10 +125,7 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
 
   async function onLogOut() {
     try {
-      await axios.delete(
-        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`,
-        { withCredentials: true }
-      );
+      await axios.delete(`${endpoint}/api/sessions`, { withCredentials: true });
       await userMutate();
     } catch (err: any) {
       // TODO: improve error message

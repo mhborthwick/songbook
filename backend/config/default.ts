@@ -1,5 +1,6 @@
 export default {
   origin: "http://localhost:3000",
+  domain: "localhost",
   port: 1337,
   dbUri: "mongodb://mongodb:27017/songbook",
   saltWorkFactor: 10,

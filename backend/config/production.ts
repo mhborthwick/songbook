@@ -1,5 +1,6 @@
 export default {
-  origin: "http://localhost:3000",
+  origin: "https://songbookfrontend-production.up.railway.app",
+  domain: "railway.app",
   port: 1337,
   dbUri: "mongodb://mongodb:27017/songbook",
   saltWorkFactor: 10,

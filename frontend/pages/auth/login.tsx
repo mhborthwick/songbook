@@ -16,6 +16,8 @@ const createSessionSchema = object({
 
 type CreateSessionInput = TypeOf<typeof createSessionSchema>;
 
+const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
+
 function Login() {
   const [loginError, setLoginError] = useState(null);
   const router = useRouter();
@@ -30,11 +32,9 @@ function Login() {
 
   async function onSubmit(values: CreateSessionInput) {
     try {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`,
-        values,
-        { withCredentials: true }
-      );
+      await axios.post(`${endpoint}/api/sessions`, values, {
+        withCredentials: true,
+      });
       router.push("/");
     } catch (err: any) {
       //TODO: Improve error message

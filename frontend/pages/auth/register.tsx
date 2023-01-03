@@ -23,6 +23,8 @@ const createUserSchema = object({
 
 type CreateUserInput = TypeOf<typeof createUserSchema>;
 
+const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
+
 function Register() {
   const [registerError, setRegisterError] = useState(null);
   const router = useRouter();
@@ -37,12 +39,9 @@ function Register() {
 
   async function onSubmit(values: CreateUserInput) {
     try {
+      await axios.post(`${endpoint}/api/users`, values);
       await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/users`,
-        values
-      );
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/sessions`,
+        `${endpoint}/api/sessions`,
         { email: values.email, password: values.password },
         { withCredentials: true }
       );
