@@ -34,7 +34,9 @@ const deserializeUser = async (
       res.cookie("accessToken", newAccessToken, {
         maxAge: 900000, //15 min
         httpOnly: true,
-        domain: config.get("domain"),
+        domain: process.env.LOCAL_DOMAIN
+          ? process.env.LOCAL_DOMAIN
+          : config.get("domain"),
         path: "/",
         sameSite: "strict",
         secure: false, //TODO: set prod flag

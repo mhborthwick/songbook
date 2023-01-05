@@ -9,7 +9,7 @@ function createServer() {
   const app = express();
   app.use(
     cors({
-      origin: config.get("origin"),
+      origin: process.env.ORIGIN ? process.env.ORIGIN : config.get("origin"),
       credentials: true,
     })
   );

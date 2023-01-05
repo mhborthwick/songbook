@@ -5,6 +5,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.production
+      args: ["NEXT_PUBLIC_SERVER_ENDPOINT=http://localhost:1337"]
     ports:
       - 3000:3000
     networks:
