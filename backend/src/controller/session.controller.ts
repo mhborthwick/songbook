@@ -25,7 +25,9 @@ export async function createUserSessionHandler(req: Request, res: Response) {
   res.cookie("accessToken", accessToken, {
     maxAge: 900000, //15 min
     httpOnly: true,
-    domain: config.get("domain"),
+    domain: process.env.LOCAL_DOMAIN
+      ? process.env.LOCAL_DOMAIN
+      : config.get("domain"),
     path: "/",
     sameSite: "strict",
     secure: false, //TODO: set prod flag
@@ -33,7 +35,9 @@ export async function createUserSessionHandler(req: Request, res: Response) {
   res.cookie("refreshToken", refreshToken, {
     maxAge: 3.154e10, //1 yr
     httpOnly: true,
-    domain: config.get("domain"),
+    domain: process.env.LOCAL_DOMAIN
+      ? process.env.LOCAL_DOMAIN
+      : config.get("domain"),
     path: "/",
     sameSite: "strict",
     secure: false, //TODO: set prod flag
