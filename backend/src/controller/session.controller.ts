@@ -58,6 +58,13 @@ export async function deleteSessionHandler(req: Request, res: Response) {
   return res
     .cookie("accessToken", accessToken, {
       maxAge: 0,
+      httpOnly: true,
+      domain: process.env.LOCAL_DOMAIN
+        ? process.env.LOCAL_DOMAIN
+        : config.get("domain"),
+      path: "/",
+      sameSite: "strict",
+      secure: false, //TODO: set prod flag
     })
     .send({
       accessToken: null,
