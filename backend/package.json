@@ -17,6 +17,7 @@
     "ts-node-dev": "^2.0.0"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
     "@types/bcrypt": "^5.0.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/config": "^3.3.0",

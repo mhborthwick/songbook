@@ -13,8 +13,10 @@ import {
   updateSongHandler,
 } from "./controller/song.controller";
 import {
+  createPasswordResetEmailHandler,
   createUserHandler,
   getCurrentUser,
+  updateUserPasswordHandler,
 } from "./controller/user.controller";
 import requireUser from "./middleware/requireUser";
 import restrictNumberOfSongs from "./middleware/restrictNumberOfSongs";
@@ -26,7 +28,11 @@ import {
   getSongSchema,
   updateSongSchema,
 } from "./schema/song.schema";
-import { createUserSchema } from "./schema/user.schema";
+import {
+  createUserSchema,
+  getUserSchema,
+  updateUserPasswordSchema,
+} from "./schema/user.schema";
 
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => {
@@ -34,6 +40,18 @@ function routes(app: Express) {
   });
 
   app.post("/api/users", validateResource(createUserSchema), createUserHandler);
+
+  app.post(
+    "/api/password-reset",
+    validateResource(getUserSchema),
+    createPasswordResetEmailHandler
+  );
+
+  app.put(
+    "/api/password-reset/:token",
+    validateResource(updateUserPasswordSchema),
+    updateUserPasswordHandler
+  );
 
   app.get("/api/me", requireUser, getCurrentUser);
 

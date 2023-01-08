@@ -10,8 +10,8 @@ const deserializeUser = async (
   next: NextFunction
 ) => {
   const accessToken =
-    get(req, "cookies.accessToken") ||
-    get(req, "headers.authorization", "").replace(/^Bearer\s/, "");
+    get(req, "headers.authorization", "").replace(/^Bearer\s/, "") ||
+    get(req, "cookies.accessToken");
   const refreshToken =
     get(req, "cookies.refreshToken") ||
     (get(req, "headers.x-refresh") as string);
@@ -24,6 +24,7 @@ const deserializeUser = async (
 
   if (decoded) {
     res.locals.user = decoded;
+    // console.log(decoded); //TODO: remove later
     return next();
   }
 
