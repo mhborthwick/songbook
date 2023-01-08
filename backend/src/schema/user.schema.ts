@@ -21,3 +21,27 @@ export const createUserSchema = object({
 });
 
 export type CreateUserInput = TypeOf<typeof createUserSchema>;
+
+export const getUserSchema = object({
+  body: object({
+    email: string({
+      required_error: "Email is required",
+    }),
+  }),
+});
+
+export type GetUserInput = TypeOf<typeof getUserSchema>;
+
+const payload = {
+  body: object({
+    password: string({
+      required_error: "Password is required",
+    }).min(6, "Password is too short"),
+  }),
+};
+
+export const updateUserPasswordSchema = object({
+  ...payload,
+});
+
+export type UpdateUserPasswordInput = TypeOf<typeof updateUserPasswordSchema>;
