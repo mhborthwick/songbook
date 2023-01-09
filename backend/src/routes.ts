@@ -49,7 +49,7 @@ function routes(app: Express) {
 
   app.put(
     "/api/password-reset/:token",
-    validateResource(updateUserPasswordSchema),
+    [requireUser, validateResource(updateUserPasswordSchema)],
     updateUserPasswordHandler
   );
 

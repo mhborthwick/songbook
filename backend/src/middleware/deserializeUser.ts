@@ -20,15 +20,20 @@ const deserializeUser = async (
     return next();
   }
 
-  const { decoded, expired } = verifyJwt(accessToken);
+  const { decoded, expired, valid } = verifyJwt(accessToken);
 
   if (decoded) {
     res.locals.user = decoded;
-    // console.log(decoded); //TODO: remove later
     return next();
   }
 
-  if (expired && refreshToken) {
+  const isResetPasswordRoute = req.path === "/api/password-reset";
+
+  if (isResetPasswordRoute && (!valid || expired)) {
+    return next();
+  }
+
+  if (refreshToken && (!valid || expired)) {
     const newAccessToken = await reIssueAccessToken({ refreshToken });
     if (newAccessToken) {
       res.setHeader("x-access-token", newAccessToken);
