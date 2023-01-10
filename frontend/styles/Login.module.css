@@ -62,3 +62,12 @@
   color: #fff;
   background-color: rgb(40, 40, 40);
 }
+
+.forgotPasswordLink {
+  display: flex;
+  justify-content: space-between;
+}
+
+.forgotPasswordLink a {
+  text-decoration: underline;
+}

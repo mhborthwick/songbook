@@ -71,9 +71,12 @@ function Login() {
                 </p>
               </div>
               <div className={loginStyles.formElement}>
-                <label className={loginStyles.label} htmlFor="password">
-                  Password:
-                </label>
+                <div className={loginStyles.forgotPasswordLink}>
+                  <label className={loginStyles.label} htmlFor="password">
+                    Password:
+                  </label>
+                  <Link href="/auth/recovery">Can't Log In?</Link>
+                </div>
                 <input
                   className={loginStyles.input}
                   id="password"

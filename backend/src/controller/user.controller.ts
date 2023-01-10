@@ -45,6 +45,7 @@ export async function createPasswordResetEmailHandler(
   );
   console.log(user.email); //TODO: remove later
   const message = createMsg(user.email, accessToken);
+  console.log(message);
   try {
     // await sendMail(message); //TODO: uncomment later
     return res.status(200).send({ accessToken });
