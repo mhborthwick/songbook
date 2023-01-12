@@ -100,7 +100,7 @@ function Recovery() {
                       Back to Log In
                     </Link>
                   </p>
-                  <p className={loginStyles.error}>{recoveryError}</p>
+                  <p className={loginStyles.requestError}>{recoveryError}</p>
                 </div>
               </form>
             </>

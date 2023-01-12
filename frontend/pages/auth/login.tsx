@@ -75,7 +75,7 @@ function Login() {
                   <label className={loginStyles.label} htmlFor="password">
                     Password:
                   </label>
-                  <Link href="/auth/recovery">Can't Log In?</Link>
+                  <Link href="/auth/recovery">Forgot password?</Link>
                 </div>
                 <input
                   className={loginStyles.input}

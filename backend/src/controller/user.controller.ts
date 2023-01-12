@@ -43,11 +43,9 @@ export async function createPasswordResetEmailHandler(
     { ...user },
     { expiresIn: config.get<string>("accessTokenTtl") } //15 min
   );
-  console.log(user.email); //TODO: remove later
   const message = createMsg(user.email, accessToken);
-  console.log(message);
   try {
-    // await sendMail(message); //TODO: uncomment later
+    await sendMail(message);
     return res.status(200).send({ accessToken });
   } catch (err: any) {
     return res.status(400).send(err.message);
@@ -58,11 +56,11 @@ export async function updateUserPasswordHandler(
   req: Request<{}, {}, UpdateUserPasswordInput["body"]>,
   res: Response
 ) {
-  const { password } = req.body as UpdateUserPasswordInput["body"];
+  const { password } = req.body;
   // TODO: maybe switch to use "_id"
   const email = res.locals.user.email;
   try {
-    await updateUserPassword({ email: email }, password);
+    await updateUserPassword({ email }, password);
     return res.sendStatus(200);
   } catch (err: any) {
     return res.status(403).send(err.message);

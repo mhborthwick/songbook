@@ -37,6 +37,12 @@ const payload = {
     password: string({
       required_error: "Password is required",
     }).min(6, "Password is too short"),
+    passwordConfirmation: string({
+      required_error: "Password confirmation is required",
+    }),
+  }).refine((data) => data.password === data.passwordConfirmation, {
+    message: "Passwords do not match",
+    path: ["passwordConfirmation"],
   }),
 };
 

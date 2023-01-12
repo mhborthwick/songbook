@@ -1,4 +1,6 @@
 import sgMail from "@sendgrid/mail";
+import config from "config";
+import { emailHtml } from "./email";
 
 sgMail.setApiKey(<string>process.env.SEND_GRID_API_KEY);
 
@@ -9,21 +11,21 @@ interface Message {
     email: string;
   };
   subject: string;
-  text: string;
   html: string;
 }
 
 export function createMsg(email: string, accessToken: string) {
-  const link = `https://songbookfrontend-production.up.railway.app/auth/resetPassword/${accessToken}`;
+  const domain = config.get<string>("origin");
+  const link = `${domain}/auth/resetPassword?token=${accessToken}`;
+
   return {
     to: email,
     from: {
       name: "Mike from Songbook",
-      email: process.env.FROM_EMAIL,
+      email: <string>process.env.FROM_EMAIL,
     },
     subject: "Reset your password",
-    text: link, // TODO: update later
-    html: `<a href=${link} target="_blank">${link}</a>`, // TODO: update later
+    html: emailHtml(link),
   };
 }
 

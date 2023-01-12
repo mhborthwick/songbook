@@ -63,6 +63,17 @@
   background-color: rgb(40, 40, 40);
 }
 
+.submitReset {
+  border: 1px solid black;
+  text-transform: uppercase;
+  padding: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #fff;
+  background-color: rgb(40, 40, 40);
+  width: 100%;
+}
+
 .forgotPasswordLink {
   display: flex;
   justify-content: space-between;
