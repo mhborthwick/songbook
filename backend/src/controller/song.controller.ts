@@ -12,6 +12,7 @@ import {
   deleteSong,
   findAllSongs,
   findUserSongs,
+  getSongsCount,
 } from "../service/song.service";
 
 export async function createSongHandler(
@@ -27,8 +28,18 @@ export async function createSongHandler(
   return res.send(song);
 }
 
+export async function getSongsCountHandler(req: Request, res: Response) {
+  const count = await getSongsCount();
+  return res.send({ count });
+}
+
+// TODO: remove skip
 export async function getAllSongsHandler(req: Request, res: Response) {
-  const songs = await findAllSongs();
+  const { skip, limit } = req.query;
+  const songs = await findAllSongs(
+    parseInt(<string>skip),
+    parseInt(<string>limit)
+  );
   if (!songs) {
     return res.sendStatus(404);
   }

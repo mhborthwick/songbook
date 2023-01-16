@@ -37,7 +37,12 @@ interface Song {
   name: string;
 }
 
+interface Count {
+  count: number;
+}
+
 const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
+const pageSize = 10;
 
 console.log(endpoint);
 
@@ -59,10 +64,54 @@ const songUrlSchema = object({
 
 type AddSongUrlInput = TypeOf<typeof songUrlSchema>;
 
-const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
-  fallbackData,
-}) => {
-  const { user, songs } = fallbackData;
+// Might be okay not using swr in this component
+function Page({
+  skip,
+  limit,
+  songs,
+}: {
+  skip: number;
+  limit: number;
+  songs: Song[];
+}) {
+  const {
+    data: songData,
+    error: songError,
+    mutate,
+    isLoading,
+    isValidating,
+  } = useSwr<Song[] | null>(
+    `
+    ${endpoint}/api/songs?skip=${skip}&limit=${limit}
+    `,
+    fetcher,
+    { fallbackData: songs }
+  );
+
+  // TODO: handle loading and error states
+
+  if (!songData || isLoading) {
+    return <></>;
+  }
+
+  const songsList = songData.map((s, i) => (
+    <li key={i} className={embedStyles.li}>
+      <Embed spotifyUrl={s.url} />
+      <div className={embedStyles.sharedBy}>
+        Shared by {s.name} at {new Date(s.updatedAt).toLocaleString()}
+      </div>
+    </li>
+  ));
+
+  return <>{songsList}</>;
+}
+
+const Home: NextPage<{
+  fallbackData: { user: User; songs: Song[]; count: Count };
+}> = ({ fallbackData }) => {
+  const { user, songs, count } = fallbackData;
+  const [index, setIndex] = useState({ skip: 0, limit: pageSize });
+
   const {
     data: userData,
     error: userError,
@@ -74,17 +123,33 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
     fetcher,
     { fallbackData: user }
   );
+
   console.log(userData);
+
   const {
     data: songData,
     error: songError,
     mutate,
+    isLoading: isSongLoading,
+    isValidating: isSongValidating,
   } = useSwr<Song[] | null>(
     `
-    ${endpoint}/api/songs
+    ${endpoint}/api/songs?skip=${index.skip}&limit=${index.limit}
     `,
     fetcher,
     { fallbackData: songs }
+  );
+
+  const {
+    data: countData,
+    error: countError,
+    mutate: countMutate,
+  } = useSwr<Count | null>(
+    `
+    ${endpoint}/api/songs-count
+    `,
+    fetcher,
+    { fallbackData: count }
   );
 
   const [songUrlError, addSongUrlError] = useState<string | null>(null);
@@ -107,10 +172,17 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
 
   async function onSubmit(values: AddSongUrlInput) {
     try {
-      await axios.post(`${endpoint}/api/songs`, values, {
-        withCredentials: true,
-      });
+      await axios.post(
+        `${endpoint}/api/songs?skip=${0}&limit=${pageSize}`,
+        values,
+        {
+          withCredentials: true,
+        }
+      );
       await mutate(); //refresh SWR https://benborgers.com/posts/swr-refres
+      await countMutate(); //refresh count swr
+      // on submit redirect to first page
+      setIndex({ skip: 0, limit: pageSize });
     } catch (err: any) {
       const hasReachedLimitMsg = err.response.data.message;
       if (hasReachedLimitMsg === "Reached max limit") {
@@ -139,25 +211,17 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
       Log In
     </Link>
   ) : null;
+
   const logoutBtn = userData ? (
     <button className={styles.logout} onClick={onLogOut}>
       Log Out
     </button>
   ) : null;
-  const songsList = songData ? (
-    <main>
-      <ul className={embedStyles.ul}>
-        {songData.map((s, i) => (
-          <li key={i} className={embedStyles.li}>
-            <Embed spotifyUrl={s.url} />
-            <div className={embedStyles.sharedBy}>
-              Shared by {s.name} at {new Date(s.updatedAt).toLocaleString()}
-            </div>
-          </li>
-        ))}
-      </ul>
-    </main>
-  ) : null;
+
+  if (!songData || !countData || isSongLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <div className={styles.container}>
@@ -205,7 +269,63 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
             </p>
           </>
         )}
-        {songsList}
+        {songData ? (
+          <div>
+            <main>
+              <ul className={embedStyles.ul}>
+                <Page skip={index.skip} limit={index.limit} songs={songData} />
+                <div style={{ display: "none" }}>
+                  <Page
+                    skip={index.skip + pageSize}
+                    limit={index.limit + 0}
+                    songs={songData}
+                  />
+                </div>
+              </ul>
+            </main>
+
+            {countData.count > pageSize ? (
+              <div className={styles.loadMoreContainer}>
+                <button
+                  onClick={() =>
+                    setIndex({
+                      skip: index.skip === 0 ? 0 : index.skip - pageSize,
+                      limit: index.limit + 0,
+                    })
+                  }
+                  className={`${styles.loadMorePrev} ${
+                    index.skip === 0 ? null : styles.buttonActive
+                  }`}
+                  disabled={index.skip === 0 ? true : false}
+                >
+                  Previous
+                </button>
+                <button
+                  onClick={() =>
+                    setIndex({
+                      skip: index.skip + pageSize,
+                      limit: index.limit + 0,
+                    })
+                  }
+                  className={`${styles.loadMoreNext} ${
+                    countData.count === 0 ||
+                    countData.count - index.skip <= pageSize
+                      ? null
+                      : styles.buttonActive
+                  }`}
+                  disabled={
+                    countData.count === 0 ||
+                    countData.count - index.skip <= pageSize
+                      ? true
+                      : false
+                  }
+                >
+                  Next
+                </button>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
       </div>
       <Footer />
     </>
@@ -213,13 +333,17 @@ const Home: NextPage<{ fallbackData: { user: User; songs: Song[] } }> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const songs = await fetcher(`${endpoint}/api/songs`);
-  const user = await fetcher(`${endpoint}/api/me`, context.req.headers);
+  const songs = await fetcher<Song[]>(
+    `${endpoint}/api/songs?skip=${0}&limit=${pageSize}`
+  );
+  const count = await fetcher<Count>(`${endpoint}/api/songs-count`);
+  const user = await fetcher<User>(`${endpoint}/api/me`, context.req.headers);
   return {
     props: {
       fallbackData: {
         user,
         songs,
+        count,
       },
     },
   };
