@@ -14,6 +14,44 @@
   transition-duration: 0.2s;
 }
 
+.loadMorePrev {
+  text-transform: uppercase;
+  padding: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  background-color: #fff;
+  color: rgb(40, 40, 40);
+  width: 10rem;
+  flex: auto;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  transition-duration: 0.2s;
+}
+
+.loadMoreNext {
+  text-transform: uppercase;
+  padding: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  background-color: #fff;
+  color: rgb(40, 40, 40);
+  width: 10rem;
+  flex: auto;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  transition-duration: 0.2s;
+}
+
+.buttonActive:hover,
+.buttonActive:active {
+  color: #fff;
+  background-color: rgb(40, 40, 40);
+}
+
+.loadMoreContainer {
+  display: flex;
+}
+
 .login:hover,
 .login:focus,
 .login:active {

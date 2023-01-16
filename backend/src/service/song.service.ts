@@ -19,8 +19,17 @@ export async function findSong(
   return Song.findOne(query, {}, options);
 }
 
-export async function findAllSongs() {
-  return Song.find({}, {}, { limit: 50, lean: true, sort: { updatedAt: -1 } });
+export async function getSongsCount() {
+  const count = await Song.countDocuments({});
+  return count;
+}
+
+export async function findAllSongs(skip: number, limit: number) {
+  return Song.find(
+    {},
+    {},
+    { skip, limit, lean: true, sort: { updatedAt: -1 } }
+  );
 }
 
 export async function findAndUpdateSong(
