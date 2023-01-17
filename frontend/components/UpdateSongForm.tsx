@@ -66,7 +66,7 @@ const UpdateSongForm = ({ songId, refresh }: Props) => {
   async function updateSongOnSubmit(values: UpdateSongInput) {
     try {
       const { songId, url } = values;
-      console.log(songId, url); //TODO: remove
+      // console.log(songId, url); //TODO: remove
       await axios.put(
         `${endpoint}/api/songs/${songId}`,
         { url },

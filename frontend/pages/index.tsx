@@ -44,7 +44,7 @@ interface Count {
 const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 const pageSize = 10;
 
-console.log(endpoint);
+// console.log(endpoint);
 
 const songUrlSchema = object({
   url: string(),
@@ -124,7 +124,7 @@ const Home: NextPage<{
     { fallbackData: user }
   );
 
-  console.log(userData);
+  // console.log(userData);
 
   const {
     data: songData,

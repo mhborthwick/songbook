@@ -62,7 +62,7 @@ const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 const Dashboard: NextPage<{
   fallbackData: { user: User; mySongs: Song[] };
 }> = ({ fallbackData }) => {
-  console.log(fallbackData);
+  // console.log(fallbackData);
   const { user, mySongs } = fallbackData;
   const { data: userData, error: userError } = useSwr<User | null>(
     `
