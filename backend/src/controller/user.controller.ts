@@ -41,7 +41,7 @@ export async function createPasswordResetEmailHandler(
   }
   const accessToken = signJwt(
     { ...user },
-    { expiresIn: config.get<string>("accessTokenTtl") } //15 min
+    { expiresIn: "15m" } //keep this set to 15 min
   );
   const message = createMsg(user.email, accessToken);
   try {

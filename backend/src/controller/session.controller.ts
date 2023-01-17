@@ -16,14 +16,14 @@ export async function createUserSessionHandler(req: Request, res: Response) {
   const session = await createSession(user._id, req.get("user-agent") || "");
   const accessToken = signJwt(
     { ...user, session: session._id },
-    { expiresIn: config.get<string>("accessTokenTtl") } //15 min
+    { expiresIn: config.get<string>("accessTokenTtl") } //30 min
   );
   const refreshToken = signJwt(
     { ...user, session: session._id },
     { expiresIn: config.get<string>("refreshTokenTtl") } //1 year
   );
   res.cookie("accessToken", accessToken, {
-    maxAge: 900000, //15 min
+    maxAge: 1800000, //30 min
     httpOnly: true,
     domain: process.env.LOCAL_DOMAIN
       ? process.env.LOCAL_DOMAIN

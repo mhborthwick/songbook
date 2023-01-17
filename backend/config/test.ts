@@ -2,7 +2,7 @@ export default {
   port: 1337,
   dbUri: "mongodb://mongodb:27017/songbook",
   saltWorkFactor: 10,
-  accessTokenTtl: "15m",
+  accessTokenTtl: "30m",
   refreshTokenTtl: "1y",
   public_key: `-----BEGIN PUBLIC KEY-----
 MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAxU8iMHkIYcIHWvKw6ywO
