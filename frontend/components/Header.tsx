@@ -19,7 +19,7 @@ const Header = ({ loginBtn, logoutBtn, returnHomeLink }: Props) => {
             <li className={`${styles.li} ${styles.link}`}>{returnHomeLink}</li>
           )}
           <li className={`${styles.li} ${styles.link}`}>
-            <Link href="#">About</Link>
+            <Link href="/about">About</Link>
           </li>
           {loginBtn && <li className={styles.li}>{loginBtn}</li>}
           {logoutBtn && (
