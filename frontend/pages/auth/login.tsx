@@ -19,7 +19,7 @@ type CreateSessionInput = TypeOf<typeof createSessionSchema>;
 const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 
 function Login() {
-  const [loginError, setLoginError] = useState(null);
+  const [loginError, setLoginError] = useState<string | null>(null);
   const router = useRouter();
 
   const {
@@ -38,7 +38,12 @@ function Login() {
       router.push("/");
     } catch (err: any) {
       //TODO: Improve error message
-      setLoginError(err.message);
+      const invalidEmailOrPasswordMsg = err.response.data;
+      if (invalidEmailOrPasswordMsg === "Invalid email or password") {
+        setLoginError("Invalid email or password.");
+      } else {
+        setLoginError(err.message);
+      }
     }
   }
 
@@ -100,7 +105,7 @@ function Login() {
                   Sign up
                 </Link>
               </p>
-              <p className={loginStyles.error}>{loginError}</p>
+              <p className={loginStyles.requestError}>{loginError}</p>
             </div>
           </form>
         </div>

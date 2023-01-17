@@ -9,9 +9,7 @@ import Link from "next/link";
 import Footer from "../../components/Footer";
 
 const getUserSchema = object({
-  email: string({
-    required_error: "Email is required",
-  }),
+  email: string().min(1, "Email is required"),
 });
 
 type GetUserInput = TypeOf<typeof getUserSchema>;
@@ -19,7 +17,7 @@ type GetUserInput = TypeOf<typeof getUserSchema>;
 const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 
 function Recovery() {
-  const [recoveryError, setRecoveryError] = useState(null);
+  const [recoveryError, setRecoveryError] = useState<string | null>(null);
   const [recoveryEmailInfo, setRecoveryEmailInfo] = useState({
     sent: false,
     email: "",
@@ -39,7 +37,12 @@ function Recovery() {
       setRecoveryEmailInfo({ sent: true, email: values.email });
     } catch (err: any) {
       //TODO: Improve error message
-      setRecoveryError(err.message);
+      const emailDoesNotExist = err.response.data;
+      if (emailDoesNotExist === "User by that email does not exist") {
+        setRecoveryError("Account by that email does not exist.");
+      } else {
+        setRecoveryError(err.message);
+      }
     }
   }
 

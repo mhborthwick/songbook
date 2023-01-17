@@ -28,7 +28,9 @@ type UpdatePasswordInput = TypeOf<typeof updatePasswordSchema>;
 const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 
 function ResetPassword({ query }: { query: { token: string } }) {
-  const [resetPasswordError, setResetPasswordError] = useState(null);
+  const [resetPasswordError, setResetPasswordError] = useState<string | null>(
+    null
+  );
   const [resetPasswordStatus, setResetPasswordStatus] = useState(false);
 
   // const router = useRouter();
@@ -51,7 +53,12 @@ function ResetPassword({ query }: { query: { token: string } }) {
       setResetPasswordStatus(true);
     } catch (err: any) {
       // TODO: Improve error message
-      setResetPasswordError(err.message);
+      const authorizedStatus = err.response.status;
+      if (authorizedStatus === 403) {
+        setResetPasswordError("Password reset link is invalid or expired.");
+      } else {
+        setResetPasswordError(err.message);
+      }
     }
   }
 

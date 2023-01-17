@@ -26,7 +26,7 @@ type CreateUserInput = TypeOf<typeof createUserSchema>;
 const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 
 function Register() {
-  const [registerError, setRegisterError] = useState(null);
+  const [registerError, setRegisterError] = useState<string | null>(null);
   const router = useRouter();
 
   const {
@@ -48,7 +48,14 @@ function Register() {
       router.push("/");
     } catch (err: any) {
       // TODO: Improve error message
-      setRegisterError(err.message);
+      const conflictingEmailStatus = err.response.status;
+      if (conflictingEmailStatus === 409) {
+        setRegisterError(
+          "Account already exists. Use a different email or log in."
+        );
+      } else {
+        setRegisterError(err.message);
+      }
     }
   }
 
