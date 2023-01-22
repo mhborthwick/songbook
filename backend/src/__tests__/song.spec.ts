@@ -1,6 +1,3 @@
-const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, "..", "..", ".env") });
-
 import supertest from "supertest";
 import createServer from "../utils/server";
 import { MongoMemoryServer } from "mongodb-memory-server";

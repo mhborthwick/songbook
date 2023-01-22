@@ -1,6 +1,3 @@
-const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, "..", "..", ".env") });
-
 import * as UserService from "../service/user.service";
 import * as SessionService from "../service/session.service";
 import mongoose from "mongoose";

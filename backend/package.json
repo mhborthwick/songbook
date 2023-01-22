@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
-    "test": "jest --runInBand",
+    "test": "jest --runInBand --setupFiles dotenv/config --config jest.config.js",
     "build": "tsc"
   },
   "devDependencies": {
