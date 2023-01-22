@@ -258,15 +258,12 @@ const Home: NextPage<{
           <>
             <h2>Welcome!</h2>
             <p>
-              Check out the songs below or{" "}
-              <Link
-                style={{ textDecoration: "underline" }}
-                href="auth/register"
-              >
-                join
-              </Link>{" "}
-              to share a song for a future visitor.
+              Check out the songs below or sign up to share a song for a future
+              visitor.
             </p>
+            <Link href="auth/register" className={styles.joinButton}>
+              Sign up
+            </Link>
           </>
         )}
         {songData ? (
