@@ -1,9 +1,9 @@
-import * as UserService from "../service/user.service";
-import * as SessionService from "../service/session.service";
 import mongoose from "mongoose";
 import supertest from "supertest";
-import createServer from "../utils/server";
-import { createUserSessionHandler } from "../controller/session.controller";
+import * as UserService from "../service/user.service";
+import * as SessionService from "../service/session.service";
+import { createServer } from "../utils";
+import { createUserSessionHandler } from "../controller";
 
 const app = createServer();
 

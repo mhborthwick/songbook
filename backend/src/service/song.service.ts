@@ -1,5 +1,6 @@
 import { FilterQuery, QueryOptions, UpdateQuery } from "mongoose";
-import Song, { SongInput, SongDocument } from "../models/song.model";
+import { Song } from "../models";
+import { SongInput, SongDocument } from "../interfaces";
 
 export async function createSong(input: SongInput) {
   return Song.create(input);

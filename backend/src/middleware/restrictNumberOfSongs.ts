@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { findUserSongs } from "../service/song.service";
+import { findUserSongs } from "../service";
 
-const restrictNumberOfSongs = async (
+export const restrictNumberOfSongs = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -9,6 +9,7 @@ const restrictNumberOfSongs = async (
   const user = res.locals.user._id;
   const userSongs = await findUserSongs({ user });
 
+  // TODO: re-think limit
   if (userSongs.length >= 15) {
     return res.status(403).send({
       message: "Reached max limit",
@@ -17,5 +18,3 @@ const restrictNumberOfSongs = async (
 
   return next();
 };
-
-export default restrictNumberOfSongs;

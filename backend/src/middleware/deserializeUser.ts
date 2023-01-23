@@ -1,10 +1,10 @@
+import config from "config";
 import { get } from "lodash";
 import { Request, Response, NextFunction } from "express";
-import { verifyJwt } from "../utils/jwt.utils";
-import { reIssueAccessToken } from "../service/session.service";
-import config from "config";
+import { verifyJwt } from "../utils";
+import { reIssueAccessToken } from "../service";
 
-const deserializeUser = async (
+export const deserializeUser = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -55,5 +55,3 @@ const deserializeUser = async (
 
   return next();
 };
-
-export default deserializeUser;

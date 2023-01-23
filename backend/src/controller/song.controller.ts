@@ -4,7 +4,7 @@ import {
   deleteSongInput,
   GetSongInput,
   UpdateSongInput,
-} from "../schema/song.schema";
+} from "../schema";
 import {
   createSong,
   findAndUpdateSong,
@@ -13,7 +13,7 @@ import {
   findAllSongs,
   findUserSongs,
   getSongsCount,
-} from "../service/song.service";
+} from "../service";
 
 export async function createSongHandler(
   req: Request<{}, {}, CreateSongInput["body"]>,
@@ -22,7 +22,6 @@ export async function createSongHandler(
   const userId = res.locals.user._id;
   const name = res.locals.user.name;
   const body = req.body;
-
   // TODO: Wrap in try / catch
   const song = await createSong({ ...body, name, user: userId });
   return res.send(song);
@@ -33,7 +32,6 @@ export async function getSongsCountHandler(req: Request, res: Response) {
   return res.send({ count });
 }
 
-// TODO: remove skip
 export async function getAllSongsHandler(req: Request, res: Response) {
   const { skip, limit } = req.query;
   const songs = await findAllSongs(

@@ -3,8 +3,6 @@ import {
   createUserSessionHandler,
   deleteSessionHandler,
   getUserSessionsHandler,
-} from "./controller/session.controller";
-import {
   createSongHandler,
   deleteSongHandler,
   getAllSongsHandler,
@@ -12,28 +10,26 @@ import {
   getSongsCountHandler,
   getUserSongsHandler,
   updateSongHandler,
-} from "./controller/song.controller";
-import {
   createPasswordResetEmailHandler,
   createUserHandler,
   getCurrentUser,
   updateUserPasswordHandler,
-} from "./controller/user.controller";
-import requireUser from "./middleware/requireUser";
-import restrictNumberOfSongs from "./middleware/restrictNumberOfSongs";
-import validateResource from "./middleware/validateResource";
-import { createSessionSchema } from "./schema/session.schema";
+} from "./controller";
 import {
+  requireUser,
+  restrictNumberOfSongs,
+  validateResource,
+} from "./middleware";
+import {
+  createSessionSchema,
   createSongSchema,
   deleteSongSchema,
   getSongSchema,
   updateSongSchema,
-} from "./schema/song.schema";
-import {
   createUserSchema,
   getUserSchema,
   updateUserPasswordSchema,
-} from "./schema/user.schema";
+} from "./schema";
 
 function routes(app: Express) {
   app.get("/healthcheck", (req: Request, res: Response) => {

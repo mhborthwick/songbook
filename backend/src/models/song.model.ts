@@ -1,20 +1,8 @@
 import mongoose from "mongoose";
 import { customAlphabet } from "nanoid";
-import { UserDocument } from "./user.model";
+import { SongDocument } from "../interfaces";
 
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10);
-
-export interface SongInput {
-  user: UserDocument["_id"];
-  name: UserDocument["name"];
-  url: string;
-}
-
-export interface SongDocument extends SongInput, mongoose.Document {
-  songId: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 const songSchema = new mongoose.Schema(
   {
@@ -33,6 +21,4 @@ const songSchema = new mongoose.Schema(
   }
 );
 
-const Song = mongoose.model<SongDocument>("Song", songSchema);
-
-export default Song;
+export const Song = mongoose.model<SongDocument>("Song", songSchema);

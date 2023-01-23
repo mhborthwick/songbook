@@ -1,18 +1,11 @@
-import config from "config";
 import { Request, Response } from "express";
 import {
   CreateUserInput,
   GetUserInput,
   UpdateUserPasswordInput,
-} from "../schema/user.schema";
-import {
-  createUser,
-  getUser,
-  updateUserPassword,
-} from "../service/user.service";
-import { signJwt } from "../utils/jwt.utils";
-import log from "../utils/logger";
-import { createMsg, sendMail } from "../utils/sendEmail";
+} from "../schema";
+import { createUser, getUser, updateUserPassword } from "../service";
+import { signJwt, log, createMsg, sendMail } from "../utils";
 
 export async function createUserHandler(
   req: Request<{}, {}, CreateUserInput["body"]>,
@@ -57,7 +50,7 @@ export async function updateUserPasswordHandler(
   res: Response
 ) {
   const { password } = req.body;
-  // TODO: maybe switch to use "_id"
+  // TODO: Maybe switch to use "_id"
   const email = res.locals.user.email;
   try {
     await updateUserPassword({ email }, password);

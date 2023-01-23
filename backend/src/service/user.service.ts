@@ -2,7 +2,8 @@ import bcrypt from "bcryptjs";
 import config from "config";
 import { omit } from "lodash";
 import { FilterQuery } from "mongoose";
-import User, { UserInput, UserDocument } from "../models/user.model";
+import { User } from "../models";
+import { UserInput, UserDocument } from "../interfaces";
 
 export async function createUser(input: UserInput) {
   try {

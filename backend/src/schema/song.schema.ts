@@ -11,7 +11,7 @@ const payload = {
     if (!isValid) {
       ctx.addIssue({
         code: ZodIssueCode.custom,
-        // TODO: add better error msg
+        // TODO: Add better error msg
         message: `Invalid URL`,
         path: ["url"],
       });

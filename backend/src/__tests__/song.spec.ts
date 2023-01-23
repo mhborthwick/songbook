@@ -1,9 +1,8 @@
 import supertest from "supertest";
-import createServer from "../utils/server";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import { createSong } from "../service/song.service";
-import { signJwt } from "../utils/jwt.utils";
+import { createSong } from "../service";
+import { createServer, signJwt } from "../utils";
 
 const app = createServer();
 const user = new mongoose.Types.ObjectId().toString();

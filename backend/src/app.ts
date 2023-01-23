@@ -1,9 +1,7 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 import config from "config";
-import connect from "./utils/connect";
-import log from "./utils/logger";
-import createServer from "./utils/server";
+import { connect, createServer, log } from "./utils";
 
 const port = config.get<number>("port");
 

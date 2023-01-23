@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
+import config from "config";
 import {
   createSession,
   findSessions,
   updateSession,
-} from "../service/session.service";
-import { validatePassword } from "../service/user.service";
-import { signJwt } from "../utils/jwt.utils";
-import config from "config";
+  validatePassword,
+} from "../service";
+import { signJwt } from "../utils";
 
 export async function createUserSessionHandler(req: Request, res: Response) {
   const user = await validatePassword(req.body);

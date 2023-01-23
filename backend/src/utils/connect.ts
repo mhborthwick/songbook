@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import config from "config";
-import log from "./logger";
+import { log } from "./logger";
 
-async function connect() {
+export async function connect() {
   const dbUri = process.env.MONGO_URL
     ? process.env.MONGO_URL
     : config.get<string>("dbUri");
@@ -15,5 +15,3 @@ async function connect() {
     process.exit(1);
   }
 }
-
-export default connect;
