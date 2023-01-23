@@ -1,5 +1,5 @@
 export default {
-  origin: "https://songbookfrontend-production.up.railway.app",
+  origin: "https://songbook.up.railway.app",
   domain: "railway.app",
   port: 1337,
   dbUri: "mongodb://mongodb:27017/songbook",
