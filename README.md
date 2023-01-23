@@ -2,7 +2,7 @@
 
 > Share your favorite songs for a future visitor
 
-## View Demo [Coming soon]
+## [View Demo](https://songbook.up.railway.app/)
 
 ## Requirements
 
