@@ -1,19 +1,15 @@
 import { NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import dashboardStyles from "../styles/Dashboard.module.css";
-import aboutStyles from "../styles/About.module.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
+import { QAndA } from "../interfaces";
+import dashboardStyles from "../styles/Dashboard.module.css";
+import aboutStyles from "../styles/About.module.css";
+// TODO: Assign images more specific name
 import img1 from "./../public/example1.png";
 import img2 from "./../public/example2.png";
 import img3 from "./../public/example3.png";
-
-interface QAndA {
-  question: string;
-  answer: JSX.Element;
-}
 
 function getQAndA({ question, answer }: QAndA) {
   return (

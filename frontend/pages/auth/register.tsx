@@ -1,13 +1,13 @@
+import axios from "axios";
+import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string, TypeOf } from "zod";
-import loginStyles from "../../styles/Login.module.css";
 import Header from "../../components/Header";
-import Link from "next/link";
 import Footer from "../../components/Footer";
+import loginStyles from "../../styles/Login.module.css";
 
 const createUserSchema = object({
   name: string().min(1, "Name is required"),

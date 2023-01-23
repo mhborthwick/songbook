@@ -43,6 +43,8 @@ COPY components ./components
 
 COPY utils ./utils
 
+COPY interfaces ./interfaces
+
 RUN yarn build
 
 ##################################################

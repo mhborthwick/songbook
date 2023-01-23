@@ -1,68 +1,21 @@
 import useSwr from "swr";
 import { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
-import fetcher from "../utils/fetcher";
 import Embed from "../components/Embed";
-import embedStyles from "../styles/Embed.module.css";
-import dashboardStyles from "../styles/Dashboard.module.css";
 import RemoveBtn from "../components/RemoveBtn";
 import UpdateSongForm from "../components/UpdateSongForm";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
-/**
- * Dashboard
- * This is where you manage your songs
- *
- * Add a song DONE
- * Delete a song DONE
- * Update a song DONE
- * View my songs DONE
- * Refresh Add song form after submit DONE
- * Add alert when someone deletes a song DONE
- * Only allow 3 songs per account DONE
- * Add a footer DONE
- * Sort order of my songs desc DONE
- * Sort order of all songs by updatedAt DONE
- * Add Google oAuth MAYBE LATER
- * Clean up login page DONE
- * Clean up register page DONE
- * Add ability to log out TODO
- * Remove welcome message TODO
- * Create reset password functionality TODO
- * Add pagination [Probably] TODO
- * If on dashboard, redirect to home if no userData TODO [At the end]
- */
-
-interface User {
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  email: string;
-  name: string;
-  session: string;
-  iat: number;
-  exp: number;
-}
-
-interface Song {
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  songId: string;
-  url: string;
-  user: string;
-  name: string;
-}
+import fetcher from "../utils/fetcher";
+import { Song, User } from "../interfaces";
+import embedStyles from "../styles/Embed.module.css";
+import dashboardStyles from "../styles/Dashboard.module.css";
 
 const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 
 const Dashboard: NextPage<{
   fallbackData: { user: User; mySongs: Song[] };
 }> = ({ fallbackData }) => {
-  // console.log(fallbackData);
   const { user, mySongs } = fallbackData;
   const { data: userData, error: userError } = useSwr<User | null>(
     `

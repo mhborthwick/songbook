@@ -1,50 +1,22 @@
-import { GetServerSideProps, NextPage } from "next";
-import Link from "next/link";
-import { object, string, TypeOf, ZodIssueCode } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import useSwr from "swr";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { GetServerSideProps, NextPage } from "next";
+import { object, string, TypeOf, ZodIssueCode } from "zod";
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Embed from "../components/Embed";
+import Footer from "../components/Footer";
+import { Count, Song, User } from "../interfaces";
+import fetcher from "../utils/fetcher";
 import styles from "../styles/Home.module.css";
 import embedStyles from "../styles/Embed.module.css";
 import dashboardStyles from "../styles/Dashboard.module.css";
-import fetcher from "../utils/fetcher";
-import Footer from "../components/Footer";
-
-interface User {
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  email: string;
-  name: string;
-  session: string;
-  iat: number;
-  exp: number;
-}
-
-interface Song {
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  songId: string;
-  url: string;
-  user: string;
-  name: string;
-}
-
-interface Count {
-  count: number;
-}
 
 const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 const pageSize = 10;
-
-// console.log(endpoint);
 
 const songUrlSchema = object({
   url: string(),
@@ -89,7 +61,6 @@ function Page({
   );
 
   // TODO: handle loading and error states
-
   if (!songData || isLoading) {
     return <></>;
   }
@@ -123,8 +94,6 @@ const Home: NextPage<{
     fetcher,
     { fallbackData: user }
   );
-
-  // console.log(userData);
 
   const {
     data: songData,

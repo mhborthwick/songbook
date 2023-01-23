@@ -13,6 +13,7 @@ services:
       - ./frontend/styles:/usr/src/app/styles
       - ./frontend/components:/usr/src/app/components
       - ./frontend/utils:/usr/src/app/utils
+      - ./frontend/interfaces:/usr/src/app/interfaces
 
   backend:
     restart: unless-stopped
