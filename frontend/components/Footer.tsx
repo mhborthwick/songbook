@@ -1,7 +1,7 @@
 import Link from "next/link";
 import footerStyles from "../styles/Footer.module.css";
 
-function Footer() {
+export function Footer() {
   return (
     <footer className={footerStyles.container}>
       <i>
@@ -17,5 +17,3 @@ function Footer() {
     </footer>
   );
 }
-
-export default Footer;

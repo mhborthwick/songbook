@@ -8,7 +8,7 @@ type Props = {
   returnHomeLink?: React.ReactNode;
 };
 
-const Header = ({ loginBtn, logoutBtn, returnHomeLink }: Props) => {
+export const Header = ({ loginBtn, logoutBtn, returnHomeLink }: Props) => {
   const title = "SongBook";
   return (
     <div className={styles.container}>
@@ -33,5 +33,3 @@ const Header = ({ loginBtn, logoutBtn, returnHomeLink }: Props) => {
     </div>
   );
 };
-
-export default Header;

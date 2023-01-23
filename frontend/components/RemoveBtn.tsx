@@ -22,7 +22,7 @@ type Props = {
   refresh: KeyedMutator<Song[] | null>;
 };
 
-const RemoveBtn = ({ songId, refresh }: Props) => {
+export const RemoveBtn = ({ songId, refresh }: Props) => {
   const [removeSongError, handleRemoveSongError] = useState<string | null>(
     null
   );
@@ -58,5 +58,3 @@ const RemoveBtn = ({ songId, refresh }: Props) => {
     </>
   );
 };
-
-export default RemoveBtn;

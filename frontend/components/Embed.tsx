@@ -4,7 +4,7 @@ type Props = {
   spotifyUrl: string;
 };
 
-const Embed = ({ spotifyUrl }: Props) => {
+export const Embed = ({ spotifyUrl }: Props) => {
   const indexStart = 31;
   const indexEnd = 53;
   const songId = spotifyUrl.slice(indexStart, indexEnd);
@@ -24,5 +24,3 @@ const Embed = ({ spotifyUrl }: Props) => {
     </>
   );
 };
-
-export default Embed;

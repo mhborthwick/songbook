@@ -1,8 +1,7 @@
 import { NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import { Header, Footer } from "../components";
 import { QAndA } from "../interfaces";
 import dashboardStyles from "../styles/Dashboard.module.css";
 import aboutStyles from "../styles/About.module.css";

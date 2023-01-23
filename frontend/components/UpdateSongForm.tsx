@@ -25,7 +25,7 @@ type Props = {
 
 const endpoint = process.env.NEXT_PUBLIC_SERVER_ENDPOINT;
 
-const UpdateSongForm = ({ songId, refresh }: Props) => {
+export const UpdateSongForm = ({ songId, refresh }: Props) => {
   const [songError, updateSongError] = useState(null);
 
   const updateSongSchema = object({
@@ -107,5 +107,3 @@ const UpdateSongForm = ({ songId, refresh }: Props) => {
     </div>
   );
 };
-
-export default UpdateSongForm;

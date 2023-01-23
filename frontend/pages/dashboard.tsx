@@ -1,11 +1,13 @@
 import useSwr from "swr";
 import { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
-import Embed from "../components/Embed";
-import RemoveBtn from "../components/RemoveBtn";
-import UpdateSongForm from "../components/UpdateSongForm";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import {
+  Embed,
+  RemoveBtn,
+  UpdateSongForm,
+  Header,
+  Footer,
+} from "../components";
 import fetcher from "../utils/fetcher";
 import { Song, User } from "../interfaces";
 import embedStyles from "../styles/Embed.module.css";

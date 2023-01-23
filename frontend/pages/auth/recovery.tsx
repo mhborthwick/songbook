@@ -4,8 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { object, string, TypeOf } from "zod";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import { Header, Footer } from "../../components";
 import loginStyles from "../../styles/Login.module.css";
 
 const getUserSchema = object({
