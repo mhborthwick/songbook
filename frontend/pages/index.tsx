@@ -137,6 +137,13 @@ const Home: NextPage<{
     }
   }, [isSubmitSuccessful, formState, reset]);
 
+  // Scroll to top when getting new songData
+  useEffect(() => {
+    setTimeout(function () {
+      window.scrollTo({ top: 0 });
+    }, 250);
+  }, [songData]);
+
   async function onSubmit(values: AddSongUrlInput) {
     try {
       await axios.post(
