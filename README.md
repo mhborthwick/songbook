@@ -1,6 +1,6 @@
 # Songbook
 
-> Share your favorite songs for a future visitor
+> Share your favorite songs for a future visitor.
 
 ## [View Demo](https://songbook.up.railway.app/)
 
